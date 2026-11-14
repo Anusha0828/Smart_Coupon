@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sell & Upload Coupon – CouponLoop</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+    <!-- Main Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-loop">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <div class="brand-icon"><i class="fa-solid fa-arrows-rotate"></i></div>
+                <span>Coupon<span class="text-primary">Loop</span></span>
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                <i class="fa-solid fa-bars fs-4"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-3">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="browse.html">Browse Coupons</a></li>
+                    <li class="nav-item"><a class="nav-link" href="how-it-works.html">How It Works</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="upload-coupon.html">Sell Coupon</a></li>
+                    <li class="nav-item"><a class="nav-link" href="seller-dashboard.html">Seller Dashboard</a></li>
+                </ul>
+                <div id="nav-auth-container" class="d-flex align-items-center gap-2"></div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="py-4">
+        <div class="container max-w-900 mx-auto">
+            <!-- Header Banner -->
+            <div class="p-4 p-md-5 rounded-4 bg-white border shadow-sm mb-4">
+                <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+                    <div>
+                        <span class="brand-pill mb-2"><i class="fa-solid fa-cloud-arrow-up me-1"></i> Monetize Rewards</span>
+                        <h2 class="fw-bold mb-1">Upload & Sell Unused Voucher</h2>
+                        <p class="text-muted small mb-0">Turn your eligible promotional discounts into instant earnings.</p>
+                    </div>
+                    <button type="button" class="btn btn-outline-primary btn-sm" onclick="App.openEligibilityModal()">
+                        <i class="fa-solid fa-shield-check me-1"></i> Check Eligibility Rules
+                    </button>
+                </div>
+            </div>
+
+            <!-- Upload Form Card -->
+            <div class="card-loop p-4 p-md-5 mb-5">
+                <form id="upload-form" onsubmit="handleUploadSubmit(event)">
+                    
+                    <h5 class="fw-bold mb-3 pb-2 border-bottom">1. Coupon & Brand Information</h5>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-8">
+                            <label class="form-label small fw-bold">Coupon Title <span class="text-danger">*</span></label>
+                            <input type="text" id="coupon-title" class="form-control" placeholder="e.g. Flat ₹150 OFF on Swiggy Gourmet Orders" required>
+                            <div class="form-text">Include key discount value and any minimum spend requirement.</div>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label small fw-bold">Brand Name <span class="text-danger">*</span></label>
+                            <input type="text" id="brand-name" class="form-control" placeholder="e.g. Swiggy, Myntra, Amazon" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold">Category <span class="text-danger">*</span></label>
+                            <select id="coupon-category" class="form-select" required>
+                                <option value="">Select Category...</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold">Source Platform <span class="text-danger">*</span></label>
+                            <select id="source-platform" class="form-select" required>
+                                <option value="Google Pay">Google Pay Voucher</option>
+                                <option value="PhonePe">PhonePe Rewards</option>
+                                <option value="Paytm">Paytm Cashback Voucher</option>
+                                <option value="Amazon">Amazon Promotional Code</option>
+                                <option value="Direct Partner">Merchant Direct Partner Pass</option>
+                                <option value="Other">Other Platform / Brand Gift Code</option>
+                            </select>
+                            <div class="form-text text-muted" style="font-size:0.75rem;">Source label indicates origin only, not proof of transferability.</div>
+                        </div>
+                    </div>
+
+                    <h5 class="fw-bold mb-3 pb-2 border-bottom">2. Voucher Code & Protection</h5>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold">Secret Coupon Code <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="fa-solid fa-key text-muted"></i></span>
+                                <input type="text" id="coupon-code" class="form-control font-monospace" placeholder="e.g. SWIGGY150EXTRA" required>
+                            </div>
+                            <div class="form-text text-success"><i class="fa-solid fa-lock me-1"></i>Protected: Hidden from all users until confirmed purchase.</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold">Minimum Order Amount (₹)</label>
+                            <input type="number" id="min-spend" class="form-control" placeholder="0 if no minimum required" value="0" min="0">
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label small fw-bold">Description & Offer Highlights <span class="text-danger">*</span></label>
+                            <textarea id="coupon-description" class="form-control" rows="2" placeholder="Briefly explain what this discount offers and on which products or services." required></textarea>
+                        </div>
+                    </div>
+
+                    <h5 class="fw-bold mb-3 pb-2 border-bottom">3. Pricing & Expiry Date</h5>
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-4">
+                            <label class="form-label small fw-bold">Original Discount Value (₹) <span class="text-danger">*</span></label>
+                            <input type="number" id="original-val" class="form-control" placeholder="e.g. 200" min="1" step="0.5" required oninput="triggerPriceSuggestionCheck()">
+                            <div class="form-text">Stated face value of the coupon benefit.</div>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label small fw-bold">Your Selling Price (₹) <span class="text-danger">*</span></label>
+                            <input type="number" id="selling-price" class="form-control" placeholder="e.g. 50" min="1" step="0.5" required>
+                            <div class="form-text">Must be &gt; 0 and &le; discount value.</div>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label small fw-bold">Expiry Date <span class="text-danger">*</span></label>
+                            <input type="date" id="expiry-date" class="form-control" required onchange="triggerPriceSuggestionCheck()">
+                            <div class="form-text">Must be in the future (at least tomorrow).</div>
+                        </div>
+                    </div>
+
+                    <!-- Smart Pricing Suggestion Box -->
+                    <div class="p-3 bg-primary-light rounded-3 border border-primary-subtle mb-4" id="smart-pricing-card">
+                        <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+                            <div>
+                                <span class="badge bg-primary text-white"><i class="fa-solid fa-wand-magic-sparkles me-1"></i> Smart Pricing Suggestion</span>
+                                <div class="small text-muted mt-1" id="smart-pricing-text">Enter original value and expiry date to see our recommended liquidation price.</div>
+                            </div>
+                            <button type="button" class="btn btn-sm btn-primary d-none" id="apply-price-btn" onclick="applySuggestedPrice()">
+                                Apply Recommended Price
+                            </button>
+                        </div>
+                    </div>
+
+                    <h5 class="fw-bold mb-3 pb-2 border-bottom">4. Usage Conditions & Verification</h5>
+                    <div class="row g-3 mb-4">
+                        <div class="col-12">
+                            <label class="form-label small fw-bold">Usage Conditions & Specific Exclusions</label>
+                            <textarea id="usage-conditions" class="form-control" rows="2" placeholder="e.g. Valid on app orders only. Not applicable on already discounted combos."></textarea>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label small fw-bold">Coupon Image or Banner URL (Optional)</label>
+                            <input type="url" id="image-url" class="form-control" placeholder="https://images.unsplash.com/... (Leave blank for default brand image)">
+                        </div>
+                    </div>
+
+                    <!-- Legal Transferability Declarations -->
+                    <div class="p-3.5 bg-light rounded-3 border mb-4">
+                        <h6 class="fw-bold mb-2 text-dark"><i class="fa-solid fa-file-contract me-2 text-primary"></i>Seller Compliance Declarations</h6>
+                        
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="checkbox" id="check-transferable" required>
+                            <label class="form-check-label small" for="check-transferable">
+                                <strong>Transferability Confirmation:</strong> I confirm that this coupon/voucher is transferable under the merchant issuer's official terms and is not locked to my personal bank account, registered UPI ID, or phone number.
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="check-terms" required>
+                            <label class="form-check-label small" for="check-terms">
+                                <strong>Terms & Platform Commission:</strong> I agree to the CouponLoop Seller Policy, the 10% platform transaction fee upon successful sale, and understand that fraudulent, expired, or invalid codes will be refunded to buyers.
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-info d-flex align-items-center mb-4 small">
+                        <i class="fa-solid fa-shield-halved fs-5 me-2 text-primary"></i>
+                        <div><strong>Admin Verification Policy:</strong> To ensure voucher authenticity, all seller-submitted coupons are reviewed by platform administrators before appearing in the public marketplace.</div>
+                    </div>
+
+                    <div id="upload-alert" class="alert d-none mb-3"></div>
+
+                    <div class="d-flex justify-content-end gap-2">
+                        <a href="seller-dashboard.html" class="btn btn-secondary px-4">Cancel</a>
+                        <button type="submit" id="submit-btn" class="btn btn-primary px-4 py-2.5 shadow">
+                            <i class="fa-solid fa-paper-plane me-2"></i>Submit for Admin Approval
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Global Footer -->
+    <footer class="footer-loop">
+        <div class="container text-center small text-muted">
+            &copy; 2026 CouponLoop Technologies &bull; <a href="terms.html" class="footer-link">Terms</a> &bull; <a href="privacy.html" class="footer-link">Privacy</a>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/app.js"></script>
+    <script>
+        let suggestedPriceVal = 0;
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Set minimum date to tomorrow
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            document.getElementById('expiry-date').min = tomorrow.toISOString().split('T')[0];
+
+            // Load Categories
+            try {
+                const res = await API.coupons.categories();
+                if (res.success && res.data) {
+                    const select = document.getElementById('coupon-category');
+                    select.innerHTML = '<option value="">Select Category...</option>' +
+                        res.data.map(c => `<option value="${c.categoryId}">${c.name}</option>`).join('');
+                }
+            } catch (err) {
+                console.error("Failed to load categories:", err);
+            }
+        });
+
+        async function triggerPriceSuggestionCheck() {
+            const originalVal = parseFloat(document.getElementById('original-val').value);
+            const expiryDate = document.getElementById('expiry-date').value;
+            const brand = document.getElementById('brand-name').value;
+
+            if (originalVal > 0 && expiryDate) {
+                try {
+                    const res = await API.coupons.smartPricing({
+                        originalValue: originalVal,
+                        expiryDate: expiryDate,
+                        brandName: brand
+                    });
+
+                    if (res.success && res.data) {
+                        const d = res.data;
+                        suggestedPriceVal = d.suggestedPrice;
+                        document.getElementById('smart-pricing-text').innerHTML = `
+                            <strong>Recommended: ₹${d.suggestedPrice}</strong> (Target Range: ₹${d.minRecommended} - ₹${d.maxRecommended}). <br>
+                            <span class="text-muted">${d.rationale}</span>
+                        `;
+                        const applyBtn = document.getElementById('apply-price-btn');
+                        applyBtn.innerText = `Apply ₹${d.suggestedPrice}`;
+                        applyBtn.classList.remove('d-none');
+                    }
+                } catch (ignored) {}
+            }
+        }
+
+        function applySuggestedPrice() {
+            if (suggestedPriceVal > 0) {
+                document.getElementById('selling-price').value = suggestedPriceVal;
+                App.showToast(`Applied smart price recommendation: ₹${suggestedPriceVal}`, 'success');
+            }
+        }
+
+        async function handleUploadSubmit(e) {
+            e.preventDefault();
+
+            const title = document.getElementById('coupon-title').value.trim();
+            const brandName = document.getElementById('brand-name').value.trim();
+            const categoryId = parseInt(document.getElementById('coupon-category').value);
+            const sourcePlatform = document.getElementById('source-platform').value;
+            const couponCode = document.getElementById('coupon-code').value.trim();
+            const description = document.getElementById('coupon-description').value.trim();
+            const originalValue = parseFloat(document.getElementById('original-val').value);
+            const sellingPrice = parseFloat(document.getElementById('selling-price').value);
+            const minPurchaseAmount = parseFloat(document.getElementById('min-spend').value) || 0;
+            const expiryDate = document.getElementById('expiry-date').value;
+            const usageConditions = document.getElementById('usage-conditions').value.trim();
+            const imageUrl = document.getElementById('image-url').value.trim();
+            const transferableConfirmed = document.getElementById('check-transferable').checked;
+            const termsConfirmed = document.getElementById('check-terms').checked;
+
+            const alertBox = document.getElementById('upload-alert');
+            const submitBtn = document.getElementById('submit-btn');
+
+            alertBox.classList.add('d-none');
+
+            if (sellingPrice > originalValue) {
+                alertBox.className = 'alert alert-danger small';
+                alertBox.innerText = 'Selling price cannot exceed the original coupon discount value.';
+                alertBox.classList.remove('d-none');
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Submitting...';
+
+            try {
+                const res = await API.seller.upload({
+                    title,
+                    brandName,
+                    categoryId,
+                    sourcePlatform,
+                    couponCode,
+                    description,
+                    originalValue,
+                    sellingPrice,
+                    minPurchaseAmount,
+                    expiryDate,
+                    usageConditions,
+                    imageUrl,
+                    transferableConfirmed,
+                    termsConfirmed
+                });
+
+                if (res.success) {
+                    alertBox.className = 'alert alert-success small';
+                    alertBox.innerText = res.message || "Your coupon has been submitted successfully. It is waiting for admin approval.";
+                    alertBox.classList.remove('d-none');
+                    App.showToast("Your coupon has been submitted successfully. It is waiting for admin approval.", "success");
+                    setTimeout(() => {
+                        window.location.href = 'seller-dashboard.html';
+                    }, 1500);
+                } else {
+                    alertBox.className = 'alert alert-danger small';
+                    alertBox.innerText = res.message;
+                    alertBox.classList.remove('d-none');
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane me-2"></i>Submit for Admin Approval';
+                }
+            } catch (err) {
+                alertBox.className = 'alert alert-danger small';
+                alertBox.innerText = err.message || 'Failed to submit coupon listing.';
+                alertBox.classList.remove('d-none');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane me-2"></i>Submit for Admin Approval';
+            }
+        }
+    </script>
+</body>
+</html>

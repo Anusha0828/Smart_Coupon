@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buyer Dashboard & My Purchases – CouponLoop</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+    <!-- Main Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-loop">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <div class="brand-icon"><i class="fa-solid fa-arrows-rotate"></i></div>
+                <span>Coupon<span class="text-primary">Loop</span></span>
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                <i class="fa-solid fa-bars fs-4"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-3">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="browse.html">Browse Coupons</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="buyer-dashboard.html">Buyer Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="seller-dashboard.html">Seller Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="wishlist.html">Wishlist</a></li>
+                </ul>
+                <div id="nav-auth-container" class="d-flex align-items-center gap-2"></div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="py-4">
+        <div class="container">
+            <!-- Header Banner -->
+            <div class="d-flex flex-wrap justify-content-between align-items-center bg-white p-4 rounded-4 border shadow-sm mb-4 gap-3">
+                <div>
+                    <span class="brand-pill mb-1">Buyer Hub</span>
+                    <h2 class="fw-bold mb-1">My Purchased Vouchers</h2>
+                    <p class="text-muted small mb-0">View your unlocked codes, copy them for redemption, or rate sellers.</p>
+                </div>
+                <a href="browse.html" class="btn btn-primary shadow-sm">
+                    <i class="fa-solid fa-compass me-1"></i> Browse More Coupons
+                </a>
+            </div>
+
+            <!-- Top Metric Cards -->
+            <div class="row g-3 mb-4">
+                <div class="col-sm-4">
+                    <div class="stat-widget">
+                        <div>
+                            <div class="stat-label">Total Purchased</div>
+                            <div class="stat-value text-primary" id="stat-purchases">0</div>
+                        </div>
+                        <div class="stat-icon bg-primary-light text-primary">
+                            <i class="fa-solid fa-bag-shopping"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="stat-widget">
+                        <div>
+                            <div class="stat-label">Total Spent</div>
+                            <div class="stat-value text-success" id="stat-spent">₹0</div>
+                        </div>
+                        <div class="stat-icon bg-success-subtle text-success">
+                            <i class="fa-solid fa-wallet"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="stat-widget">
+                        <div>
+                            <div class="stat-label">Wishlist Items</div>
+                            <div class="stat-value text-danger" id="stat-wishlist">0</div>
+                        </div>
+                        <div class="stat-icon bg-danger-subtle text-danger">
+                            <i class="fa-solid fa-heart"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Purchases List -->
+            <div class="card-loop p-4 mb-5">
+                <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+                    <h5 class="fw-bold mb-0">Unlocked Coupons & Codes</h5>
+                    <span class="badge bg-light text-muted border" id="purchases-count-badge">0 Vouchers</span>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle small mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Date & Txn ID</th>
+                                <th>Voucher Offer</th>
+                                <th>Price Paid</th>
+                                <th>Unlocked Code</th>
+                                <th>Expiry</th>
+                                <th>Dispute Status</th>
+                                <th class="text-end">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="purchases-tbody">
+                            <tr>
+                                <td colspan="7" class="text-center py-4 text-muted">Loading your purchases...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Review Seller Modal -->
+    <div class="modal fade" id="reviewModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg" style="border-radius:16px;">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold"><i class="fa-solid fa-star text-warning me-2"></i>Rate & Review Seller</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="review-purchase-id">
+                    <p class="small text-muted">Did the code work smoothly? Your feedback helps the CouponLoop community recognize honest sellers.</p>
+                    
+                    <div class="mb-3 text-center">
+                        <label class="form-label small fw-bold d-block mb-2">Rating</label>
+                        <div class="d-flex justify-content-center gap-2 fs-3 text-warning cursor-pointer" id="star-rating-box">
+                            <i class="fa-solid fa-star" data-val="1" onclick="setRating(1)"></i>
+                            <i class="fa-solid fa-star" data-val="2" onclick="setRating(2)"></i>
+                            <i class="fa-solid fa-star" data-val="3" onclick="setRating(3)"></i>
+                            <i class="fa-solid fa-star" data-val="4" onclick="setRating(4)"></i>
+                            <i class="fa-solid fa-star" data-val="5" onclick="setRating(5)"></i>
+                        </div>
+                        <input type="hidden" id="review-rating-val" value="5">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Review Comment</label>
+                        <textarea id="review-comment" class="form-control" rows="3" placeholder="e.g. Worked instantly on the Swiggy checkout, saved ₹150!"></textarea>
+                    </div>
+
+                    <div id="review-alert" class="alert d-none small mb-0"></div>
+                </div>
+                <div class="modal-footer border-0 pt-0">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="submit-review-btn" onclick="submitReview()">Submit Review</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Raise Dispute Modal -->
+    <div class="modal fade" id="disputeModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg" style="border-radius:16px;">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold text-danger"><i class="fa-solid fa-triangle-exclamation me-2"></i>Report Invalid Coupon / Raise Dispute</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="dispute-purchase-id">
+                    <p class="small text-muted">Protected by CouponLoop 24-Hour Guarantee. If the code was already redeemed or rejected by the merchant, submit this claim for administrative refund.</p>
+
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Dispute Reason <span class="text-danger">*</span></label>
+                        <select id="dispute-reason" class="form-select" required>
+                            <option value="Coupon code already used/redeemed">Coupon code already used/redeemed</option>
+                            <option value="Code invalid or not recognized by merchant">Code invalid or not recognized by merchant</option>
+                            <option value="Coupon bound to original seller account">Coupon bound to original seller account</option>
+                            <option value="Offer terms differed from listing">Offer terms differed from listing</option>
+                            <option value="Other redemption issue">Other redemption issue</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Details & Merchant Error Message <span class="text-danger">*</span></label>
+                        <textarea id="dispute-details" class="form-control" rows="3" placeholder="Describe the error returned when applying the coupon on the merchant website..." required></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Screenshot / Error Proof URL (Optional)</label>
+                        <input type="url" id="dispute-evidence" class="form-control" placeholder="https://imgur.com/... or screenshot link">
+                    </div>
+
+                    <div id="dispute-alert" class="alert d-none small mb-0"></div>
+                </div>
+                <div class="modal-footer border-0 pt-0">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="submit-dispute-btn" onclick="submitDispute()">Submit Dispute</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Global Footer -->
+    <footer class="footer-loop">
+        <div class="container text-center small text-muted">
+            &copy; 2026 CouponLoop Technologies &bull; <a href="terms.html" class="footer-link">Terms</a> &bull; <a href="privacy.html" class="footer-link">Privacy</a>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/app.js"></script>
+    <script>
+        let myPurchasesList = [];
+        let reviewModalInstance = null;
+        let disputeModalInstance = null;
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadBuyerDashboard();
+            await loadPurchases();
+        });
+
+        async function loadBuyerDashboard() {
+            try {
+                const res = await API.buyer.dashboard();
+                if (res.success && res.data) {
+                    document.getElementById('stat-purchases').innerText = res.data.totalPurchases || 0;
+                    document.getElementById('stat-spent').innerText = '₹' + Math.round(res.data.totalSpent || 0);
+                    document.getElementById('stat-wishlist').innerText = res.data.wishlistCount || 0;
+                }
+            } catch (err) {
+                console.error("Buyer dashboard load failed:", err);
+            }
+        }
+
+        async function loadPurchases() {
+            try {
+                const res = await API.buyer.purchases();
+                if (res.success && res.data) {
+                    myPurchasesList = res.data;
+                    document.getElementById('purchases-count-badge').innerText = `${myPurchasesList.length} Vouchers`;
+                    const tbody = document.getElementById('purchases-tbody');
+
+                    if (myPurchasesList.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="7" class="text-center py-4 text-muted">You have not purchased any coupons yet. <a href="browse.html" class="fw-bold">Browse available offers!</a></td></tr>';
+                        return;
+                    }
+
+                    tbody.innerHTML = myPurchasesList.map(p => {
+                        let disputeBadge = '<span class="badge bg-light text-muted border">None</span>';
+                        if (p.disputeStatus === 'RAISED') disputeBadge = '<span class="badge bg-warning text-dark">Under Review</span>';
+                        if (p.disputeStatus === 'REFUNDED') disputeBadge = '<span class="badge bg-danger">Refunded</span>';
+                        if (p.disputeStatus === 'RESOLVED') disputeBadge = '<span class="badge bg-success">Resolved</span>';
+
+                        return `
+                            <tr>
+                                <td>
+                                    <div>${p.purchaseDate ? p.purchaseDate.split(' ')[0] : 'Recent'}</div>
+                                    <div class="text-muted font-monospace" style="font-size:0.75rem;">${p.transactionId}</div>
+                                </td>
+                                <td>
+                                    <div class="fw-bold">${p.couponTitle}</div>
+                                    <div class="text-muted" style="font-size:0.75rem;">${p.brandName} &bull; ${p.categoryName}</div>
+                                </td>
+                                <td>
+                                    <strong class="text-primary">₹${Math.round(p.purchasePrice)}</strong>
+                                </td>
+                                <td>
+                                    <div class="coupon-code-box py-1 px-2 d-inline-flex gap-2 align-items-center">
+                                        <code class="fw-bold text-primary fs-6">${p.couponCode}</code>
+                                        <button class="btn btn-sm btn-light border py-0 px-2" onclick="App.copyCode('${p.couponCode}', this)" title="Copy Code">
+                                            <i class="fa-regular fa-copy"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>${p.expiryDate}</div>
+                                </td>
+                                <td>${disputeBadge}</td>
+                                <td class="text-end">
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                            Actions
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                                            ${!p.reviewed ? `<li><button class="dropdown-item small" onclick="openReviewModal(${p.purchaseId})"><i class="fa-solid fa-star text-warning me-2"></i>Rate Seller</button></li>` : `<li><span class="dropdown-item-text small text-muted"><i class="fa-solid fa-check text-success me-2"></i>Reviewed</span></li>`}
+                                            ${p.disputeStatus === 'NONE' ? `<li><button class="dropdown-item small text-danger" onclick="openDisputeModal(${p.purchaseId})"><i class="fa-solid fa-triangle-exclamation me-2"></i>Report / Dispute</button></li>` : ''}
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        `;
+                    }).join('');
+                }
+            } catch (err) {
+                console.error("Purchases load failed:", err);
+            }
+        }
+
+        // Review Modal Handlers
+        function openReviewModal(purchaseId) {
+            document.getElementById('review-purchase-id').value = purchaseId;
+            setRating(5);
+            document.getElementById('review-comment').value = '';
+            document.getElementById('review-alert').classList.add('d-none');
+
+            const modalEl = document.getElementById('reviewModal');
+            reviewModalInstance = new bootstrap.Modal(modalEl);
+            reviewModalInstance.show();
+        }
+
+        function setRating(val) {
+            document.getElementById('review-rating-val').value = val;
+            const stars = document.querySelectorAll('#star-rating-box i');
+            stars.forEach(s => {
+                const sVal = parseInt(s.getAttribute('data-val'));
+                if (sVal <= val) {
+                    s.className = 'fa-solid fa-star';
+                } else {
+                    s.className = 'fa-regular fa-star';
+                }
+            });
+        }
+
+        async function submitReview() {
+            const purchaseId = parseInt(document.getElementById('review-purchase-id').value);
+            const rating = parseInt(document.getElementById('review-rating-val').value);
+            const reviewText = document.getElementById('review-comment').value.trim();
+            const alertBox = document.getElementById('review-alert');
+            const btn = document.getElementById('submit-review-btn');
+
+            btn.disabled = true;
+            try {
+                const res = await API.reviews.submit({ purchaseId, rating, reviewText });
+                if (res.success) {
+                    App.showToast("Seller review submitted!", "success");
+                    reviewModalInstance.hide();
+                    loadPurchases();
+                } else {
+                    alertBox.className = 'alert alert-danger small';
+                    alertBox.innerText = res.message;
+                    alertBox.classList.remove('d-none');
+                    btn.disabled = false;
+                }
+            } catch (err) {
+                alertBox.className = 'alert alert-danger small';
+                alertBox.innerText = err.message || 'Failed to submit review.';
+                alertBox.classList.remove('d-none');
+                btn.disabled = false;
+            }
+        }
+
+        // Dispute Modal Handlers
+        function openDisputeModal(purchaseId) {
+            document.getElementById('dispute-purchase-id').value = purchaseId;
+            document.getElementById('dispute-details').value = '';
+            document.getElementById('dispute-evidence').value = '';
+            document.getElementById('dispute-alert').classList.add('d-none');
+
+            const modalEl = document.getElementById('disputeModal');
+            disputeModalInstance = new bootstrap.Modal(modalEl);
+            disputeModalInstance.show();
+        }
+
+        async function submitDispute() {
+            const purchaseId = parseInt(document.getElementById('dispute-purchase-id').value);
+            const reason = document.getElementById('dispute-reason').value;
+            const details = document.getElementById('dispute-details').value.trim();
+            const evidenceUrl = document.getElementById('dispute-evidence').value.trim();
+            const alertBox = document.getElementById('dispute-alert');
+            const btn = document.getElementById('submit-dispute-btn');
+
+            if (!details) {
+                alertBox.className = 'alert alert-danger small';
+                alertBox.innerText = 'Please provide details of the issue.';
+                alertBox.classList.remove('d-none');
+                return;
+            }
+
+            btn.disabled = true;
+            try {
+                const res = await API.disputes.raise({ purchaseId, reason, details, evidenceUrl });
+                if (res.success) {
+                    App.showToast("Dispute submitted for review.", "warning");
+                    disputeModalInstance.hide();
+                    loadPurchases();
+                } else {
+                    alertBox.className = 'alert alert-danger small';
+                    alertBox.innerText = res.message;
+                    alertBox.classList.remove('d-none');
+                    btn.disabled = false;
+                }
+            } catch (err) {
+                alertBox.className = 'alert alert-danger small';
+                alertBox.innerText = err.message || 'Failed to submit dispute.';
+                alertBox.classList.remove('d-none');
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>

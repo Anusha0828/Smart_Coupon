@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How It Works – CouponLoop</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-loop">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <div class="brand-icon"><i class="fa-solid fa-arrows-rotate"></i></div>
+                <span>Coupon<span class="text-primary">Loop</span></span>
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                <i class="fa-solid fa-bars fs-4"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-3">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="browse.html">Browse Coupons</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="how-it-works.html">How It Works</a></li>
+                    <li class="nav-item"><a class="nav-link" href="upload-coupon.html">Sell Coupon</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">About Us</a></li>
+                </ul>
+                <div id="nav-auth-container" class="d-flex align-items-center gap-2"></div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="py-5">
+        <div class="container max-w-900 mx-auto">
+            <div class="text-center mb-5">
+                <span class="brand-pill">Clear & Transparent</span>
+                <h1 class="display-5 fw-bold mb-3">How CouponLoop Works</h1>
+                <p class="lead text-muted">A step-by-step walkthrough of our secure voucher exchange mechanism.</p>
+            </div>
+
+            <!-- Workflow 1: The Buyer Experience -->
+            <div class="card-loop p-4 p-md-5 mb-4">
+                <div class="d-flex align-items-center gap-2 mb-3">
+                    <span class="badge bg-primary fs-6 rounded-pill px-3 py-1">Buyer Experience</span>
+                    <h4 class="fw-bold mb-0">Discovering & Redeeming Deals</h4>
+                </div>
+                <div class="row g-4 mt-1">
+                    <div class="col-md-4">
+                        <div class="p-3 bg-light rounded-3 border h-100">
+                            <div class="fw-bold text-primary mb-1">Step 1: Browse & Filter</div>
+                            <p class="small text-muted mb-0">Search hundreds of deals by brand (Swiggy, Zomato, Myntra, etc.), category, price range, or expiring urgency.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="p-3 bg-light rounded-3 border h-100">
+                            <div class="fw-bold text-primary mb-1">Step 2: Checkout via Sandbox</div>
+                            <p class="small text-muted mb-0">Review coupon terms and pay securely via demo UPI, card, or netbanking. Our transactional engine prevents double-purchase.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="p-3 bg-light rounded-3 border h-100">
+                            <div class="fw-bold text-primary mb-1">Step 3: Instant Unlock</div>
+                            <p class="small text-muted mb-0">The voucher code is instantly revealed with one-click copy. Redeem on merchant app, backed by our 24-hr dispute guarantee.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Workflow 2: The Seller Experience -->
+            <div class="card-loop p-4 p-md-5 mb-4">
+                <div class="d-flex align-items-center gap-2 mb-3">
+                    <span class="badge bg-success fs-6 rounded-pill px-3 py-1">Seller Experience</span>
+                    <h4 class="fw-bold mb-0">Monetizing Unneeded Rewards</h4>
+                </div>
+                <div class="row g-4 mt-1">
+                    <div class="col-md-4">
+                        <div class="p-3 bg-light rounded-3 border h-100">
+                            <div class="fw-bold text-success mb-1">Step 1: Upload Coupon</div>
+                            <p class="small text-muted mb-0">Enter voucher details, face value, and code. Confirm eligibility and transferability under issuer terms.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="p-3 bg-light rounded-3 border h-100">
+                            <div class="fw-bold text-success mb-1">Step 2: Smart Price Guidance</div>
+                            <p class="small text-muted mb-0">Our algorithmic pricing suggestion analyzes days to expiry and brand popularity to recommend an optimal competitive price.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="p-3 bg-light rounded-3 border h-100">
+                            <div class="fw-bold text-success mb-1">Step 3: Receive Payout</div>
+                            <p class="small text-muted mb-0">When bought, you earn 90% net of the 10% platform commission. Withdraw directly to your active UPI handle.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Standout Feature: Expiry Reminder System -->
+            <div class="card-loop p-4 p-md-5 mb-4">
+                <h4 class="fw-bold mb-2"><i class="fa-solid fa-clock-rotate-left text-warning me-2"></i>Smart Expiry Reminder Alerts</h4>
+                <p class="text-muted small">
+                    To maximize liquidation rates, CouponLoop actively monitors your active listings and issues automated notifications:
+                </p>
+                <div class="d-flex flex-wrap gap-2">
+                    <span class="badge bg-warning text-dark p-2 px-3"><i class="fa-solid fa-bell me-1"></i> 7 Days Before Expiry</span>
+                    <span class="badge bg-warning-subtle text-dark border border-warning p-2 px-3"><i class="fa-solid fa-triangle-exclamation me-1"></i> 3 Days Before Expiry</span>
+                    <span class="badge bg-danger text-white p-2 px-3"><i class="fa-solid fa-fire me-1"></i> 24 Hours Final Clearance</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer-loop">
+        <div class="container text-center small text-muted">
+            &copy; 2026 CouponLoop Technologies &bull; <a href="terms.html" class="footer-link">Terms</a> &bull; <a href="privacy.html" class="footer-link">Privacy</a>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/app.js"></script>
+</body>
+</html>

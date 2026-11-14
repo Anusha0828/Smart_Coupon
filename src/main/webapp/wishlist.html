@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Wishlist – CouponLoop</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+    <!-- Main Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-loop">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <div class="brand-icon"><i class="fa-solid fa-arrows-rotate"></i></div>
+                <span>Coupon<span class="text-primary">Loop</span></span>
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                <i class="fa-solid fa-bars fs-4"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-3">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="browse.html">Browse Coupons</a></li>
+                    <li class="nav-item"><a class="nav-link" href="buyer-dashboard.html">Buyer Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="wishlist.html">Wishlist</a></li>
+                </ul>
+                <div id="nav-auth-container" class="d-flex align-items-center gap-2"></div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="py-4">
+        <div class="container">
+            <!-- Header Banner -->
+            <div class="d-flex flex-wrap justify-content-between align-items-center bg-white p-4 rounded-4 border shadow-sm mb-4 gap-3">
+                <div>
+                    <span class="brand-pill mb-1"><i class="fa-solid fa-heart text-danger me-1"></i> Saved Deals</span>
+                    <h2 class="fw-bold mb-1">My Wishlist</h2>
+                    <p class="text-muted small mb-0">Coupons you've saved to keep an eye on before buying.</p>
+                </div>
+                <a href="browse.html" class="btn btn-outline-primary btn-sm">
+                    <i class="fa-solid fa-magnifying-glass me-1"></i> Discover More Coupons
+                </a>
+            </div>
+
+            <!-- Wishlist Items Grid -->
+            <div class="row g-3" id="wishlist-grid">
+                <div class="col-12 text-center py-5">
+                    <div class="spinner-border text-primary" role="status"></div>
+                    <div class="mt-2 text-muted small">Loading saved coupons...</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Global Footer -->
+    <footer class="footer-loop">
+        <div class="container text-center small text-muted">
+            &copy; 2026 CouponLoop Technologies &bull; <a href="terms.html" class="footer-link">Terms</a> &bull; <a href="privacy.html" class="footer-link">Privacy</a>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadWishlist();
+        });
+
+        async function loadWishlist() {
+            const grid = document.getElementById('wishlist-grid');
+            try {
+                const res = await API.wishlist.list();
+                if (res.success && res.data) {
+                    const items = res.data;
+                    if (items.length === 0) {
+                        grid.innerHTML = `
+                            <div class="col-12 text-center py-5">
+                                <div class="cat-icon-circle bg-danger-subtle text-danger mb-3" style="width:70px;height:70px;font-size:2rem;">
+                                    <i class="fa-regular fa-heart"></i>
+                                </div>
+                                <h5 class="fw-bold">Your Wishlist is Empty</h5>
+                                <p class="text-muted small">Browse through hundreds of discounted vouchers and save your favorites here.</p>
+                                <a href="browse.html" class="btn btn-primary">Browse Coupons</a>
+                            </div>
+                        `;
+                        return;
+                    }
+
+                    grid.innerHTML = items.map(w => {
+                        const c = w.coupon;
+                        return `
+                            <div class="col-sm-6 col-lg-3" id="wishlist-item-${w.couponId}">
+                                <div class="card-loop coupon-card">
+                                    <div class="coupon-image-wrapper">
+                                        <img src="${c.imageUrl}" class="coupon-image">
+                                        <span class="badge bg-dark text-white coupon-badge-top">${c.brandName}</span>
+                                        <button class="wishlist-btn-overlay active" onclick="removeWishlistItem(${c.couponId})">
+                                            <i class="fa-solid fa-heart text-danger"></i>
+                                        </button>
+                                    </div>
+                                    <div class="coupon-body">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span class="brand-pill">${c.brandName}</span>
+                                            <span class="source-badge">${c.sourcePlatform}</span>
+                                        </div>
+                                        <h6 class="fw-bold text-dark text-truncate mt-1 mb-2">${c.title}</h6>
+                                        
+                                        <div class="price-box mt-auto">
+                                            <div>
+                                                <span class="selling-price">₹${Math.round(c.sellingPrice)}</span>
+                                                <span class="original-price">₹${Math.round(c.originalValue)}</span>
+                                            </div>
+                                            <span class="discount-tag">${Math.round(c.discountPercentage)}% OFF</span>
+                                        </div>
+
+                                        <div class="d-flex gap-2 mt-2">
+                                            <a href="coupon-details.html?id=${c.couponId}" class="btn btn-sm btn-outline-primary flex-grow-1">Details</a>
+                                            <button class="btn btn-sm btn-primary flex-grow-1" onclick="App.openCheckoutModal(${c.couponId})">
+                                                Buy Now
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                }
+            } catch (err) {
+                grid.innerHTML = `<div class="col-12 text-center py-5 text-danger">${err.message || 'Please sign in to view your wishlist.'}</div>`;
+            }
+        }
+
+        async function removeWishlistItem(couponId) {
+            try {
+                const res = await API.wishlist.toggle(couponId);
+                if (res.success) {
+                    App.showToast("Removed from wishlist", "info");
+                    const el = document.getElementById(`wishlist-item-${couponId}`);
+                    if (el) el.remove();
+                    const remaining = document.querySelectorAll('#wishlist-grid .col-sm-6');
+                    if (remaining.length === 0) {
+                        loadWishlist();
+                    }
+                }
+            } catch (err) {
+                App.showToast(err.message, "error");
+            }
+        }
+    </script>
+</body>
+</html>

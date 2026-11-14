@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CouponLoop – Turning Unused Coupons into Value</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+    <!-- Main Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-loop">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <div class="brand-icon">
+                    <i class="fa-solid fa-arrows-rotate"></i>
+                </div>
+                <span>Coupon<span class="text-primary">Loop</span></span>
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                <i class="fa-solid fa-bars fs-4"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-3">
+                    <li class="nav-item"><a class="nav-link active" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="browse.html">Browse Coupons</a></li>
+                    <li class="nav-item"><a class="nav-link" href="how-it-works.html">How It Works</a></li>
+                    <li class="nav-item"><a class="nav-link" href="upload-coupon.html">Sell Coupon</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">About Us</a></li>
+                </ul>
+                <div id="nav-auth-container" class="d-flex align-items-center gap-2">
+                    <!-- Populated dynamically via app.js -->
+                    <a href="login.html" class="btn btn-sm btn-outline-primary px-3">Sign In</a>
+                    <a href="register.html" class="btn btn-sm btn-primary px-3">Get Started</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="container">
+                <div class="row align-items-center gy-5">
+                    <div class="col-lg-7">
+                        <div class="d-inline-flex align-items-center gap-2 bg-white px-3 py-1.5 rounded-pill shadow-sm border mb-3">
+                            <span class="badge bg-success rounded-pill px-2.5 py-1">Verified Transferable</span>
+                            <span class="small fw-semibold text-muted">India's Smartest Coupon Marketplace</span>
+                        </div>
+                        <h1 class="display-4 fw-bolder mb-3">
+                            Don't Let Your Coupons <br>
+                            <span class="text-gradient">Go to Waste!</span>
+                        </h1>
+                        <p class="lead text-muted mb-4 pe-lg-4">
+                            Sell unused transferable coupons, earn money, and discover discounts from brands you love. 
+                            Turn idle promotional rewards into real cash today.
+                        </p>
+                        <div class="d-flex flex-wrap gap-3">
+                            <a href="browse.html" class="btn btn-primary btn-lg px-4 shadow">
+                                <i class="fa-solid fa-compass me-2"></i>Explore Coupons
+                            </a>
+                            <a href="upload-coupon.html" class="btn btn-outline-primary btn-lg px-4">
+                                <i class="fa-solid fa-cloud-arrow-up me-2"></i>Sell Your Coupon
+                            </a>
+                        </div>
+                        <div class="d-flex align-items-center gap-4 mt-4 pt-2 text-muted small">
+                            <div class="d-flex align-items-center gap-1.5">
+                                <i class="fa-solid fa-shield-check text-primary"></i> 100% Transferable Checks
+                            </div>
+                            <div class="d-flex align-items-center gap-1.5">
+                                <i class="fa-solid fa-lock text-primary"></i> Codes Protected until Paid
+                            </div>
+                            <div class="d-flex align-items-center gap-1.5">
+                                <i class="fa-solid fa-rotate-left text-primary"></i> 24-Hr Dispute Guarantee
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-5">
+                        <div class="hero-stats-card">
+                            <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+                                <h6 class="fw-bold mb-0"><i class="fa-solid fa-bolt text-warning me-2"></i>Live Market Pulse</h6>
+                                <span class="badge bg-primary-light text-primary">Active Trading</span>
+                            </div>
+                            <div class="p-3 bg-white rounded-3 shadow-sm border mb-3">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="bg-success-subtle text-success p-2.5 rounded-circle">
+                                        <i class="fa-solid fa-shield-check fs-5"></i>
+                                    </div>
+                                    <div>
+                                        <div class="fw-bold small text-dark">Admin-Verified Listings</div>
+                                        <div class="text-muted" style="font-size:0.75rem;">100% transferability verification prior to marketplace display</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="p-3 bg-white rounded-3 shadow-sm border mb-3">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="bg-primary-light text-primary p-2.5 rounded-circle">
+                                        <i class="fa-solid fa-lock-open fs-5"></i>
+                                    </div>
+                                    <div>
+                                        <div class="fw-bold small text-dark">Instant Code Revelation</div>
+                                        <div class="text-muted" style="font-size:0.75rem;">Voucher claim codes unlocked instantly upon payment</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="p-3 bg-white rounded-3 shadow-sm border mb-3">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="bg-warning-subtle text-warning p-2.5 rounded-circle">
+                                        <i class="fa-solid fa-scale-balanced fs-5"></i>
+                                    </div>
+                                    <div>
+                                        <div class="fw-bold small text-dark">24-Hour Buyer Protection</div>
+                                        <div class="text-muted" style="font-size:0.75rem;">Full refund coverage if a purchased voucher is invalid</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="p-2.5 bg-light rounded-3 text-center small text-muted">
+                                <i class="fa-solid fa-users text-primary me-1"></i> Over <strong>5,000+</strong> shoppers saving every month
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How CouponLoop Works Section -->
+        <section class="py-5 bg-white border-bottom">
+            <div class="container py-4">
+                <div class="text-center max-w-700 mx-auto mb-5">
+                    <span class="brand-pill">Seamless Process</span>
+                    <h2 class="fw-bold">How CouponLoop Works</h2>
+                    <p class="text-muted">A secure, transparent ecosystem turning idle vouchers into win-win value.</p>
+                </div>
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="card h-100 border-0 p-4 rounded-4 shadow-sm text-center">
+                            <div class="cat-icon-circle bg-primary-light text-primary">
+                                <i class="fa-solid fa-upload"></i>
+                            </div>
+                            <h5 class="fw-bold">1. Sellers Upload</h5>
+                            <p class="text-muted small">
+                                Received an unused transferable voucher from Google Pay, PhonePe, or Amazon? List it with proof of transferability and set your price with our smart suggestion tool.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card h-100 border-0 p-4 rounded-4 shadow-sm text-center">
+                            <div class="cat-icon-circle bg-secondary-light text-secondary">
+                                <i class="fa-solid fa-credit-card"></i>
+                            </div>
+                            <h5 class="fw-bold">2. Buyers Purchase</h5>
+                            <p class="text-muted small">
+                                Browse filtered deals across food, travel, fashion, and OTT. Checkout through the sandbox payment gateway with anti-double-spend database protection.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card h-100 border-0 p-4 rounded-4 shadow-sm text-center">
+                            <div class="cat-icon-circle bg-success-subtle text-success">
+                                <i class="fa-solid fa-unlock-keyhole"></i>
+                            </div>
+                            <h5 class="fw-bold">3. Unlock & Redeem</h5>
+                            <p class="text-muted small">
+                                The voucher code is instantly revealed to the buyer. Sellers receive 90% payout net of platform commission once verified, supported by our 24-hr dispute policy.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Popular Coupon Categories -->
+        <section class="py-5 bg-page">
+            <div class="container py-4">
+                <div class="d-flex justify-content-between align-items-end mb-4">
+                    <div>
+                        <span class="brand-pill">Explore by Interest</span>
+                        <h2 class="fw-bold mb-0">Popular Categories</h2>
+                    </div>
+                    <a href="browse.html" class="btn btn-outline-primary btn-sm">View All <i class="fa-solid fa-arrow-right ms-1"></i></a>
+                </div>
+                <div class="row row-cols-2 row-cols-md-3 row-cols-lg-5 g-3" id="categories-container">
+                    <!-- Loaded dynamically via JavaScript -->
+                    <div class="col text-center py-4 text-muted">Loading categories...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Trending Deals Section -->
+        <section class="py-5 bg-white border-top border-bottom">
+            <div class="container py-4">
+                <div class="d-flex justify-content-between align-items-end mb-4">
+                    <div>
+                        <span class="brand-pill"><i class="fa-solid fa-fire me-1 text-danger"></i> High Demand</span>
+                        <h2 class="fw-bold mb-0">Trending Deals</h2>
+                    </div>
+                    <a href="browse.html?sort=discount_desc" class="btn btn-outline-primary btn-sm">See Top Discounts</a>
+                </div>
+                <div class="row g-4" id="trending-container">
+                    <!-- Populated dynamically -->
+                    <div class="col-12 text-center py-5 text-muted">Loading trending offers...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recently Added Coupons -->
+        <section class="py-5 bg-page">
+            <div class="container py-4">
+                <div class="d-flex justify-content-between align-items-end mb-4">
+                    <div>
+                        <span class="brand-pill">Fresh Listings</span>
+                        <h2 class="fw-bold mb-0">Recently Added</h2>
+                    </div>
+                    <a href="browse.html?sort=newest" class="btn btn-outline-primary btn-sm">Explore All</a>
+                </div>
+                <div class="row g-4" id="recent-container">
+                    <!-- Populated dynamically -->
+                    <div class="col-12 text-center py-5 text-muted">Loading recent coupons...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Benefits Section: Buyers & Sellers -->
+        <section class="py-5 bg-white border-top border-bottom">
+            <div class="container py-4">
+                <div class="row g-5 align-items-center">
+                    <div class="col-lg-6">
+                        <div class="p-4 p-md-5 rounded-4 bg-primary-light border">
+                            <span class="badge bg-primary text-white mb-2">For Buyers</span>
+                            <h3 class="fw-bold mb-3">Save Big on Premium Brands</h3>
+                            <ul class="list-unstyled d-flex flex-column gap-3 mb-4">
+                                <li class="d-flex align-items-start gap-3">
+                                    <i class="fa-solid fa-circle-check text-primary fs-5 mt-1"></i>
+                                    <div><strong>Deep Discounts:</strong> Get up to 70-80% off on food delivery, flight bookings, apparel, and movies.</div>
+                                </li>
+                                <li class="d-flex align-items-start gap-3">
+                                    <i class="fa-solid fa-circle-check text-primary fs-5 mt-1"></i>
+                                    <div><strong>Instant Code Delivery:</strong> Codes unlocked immediately upon sandbox payment confirmation.</div>
+                                </li>
+                                <li class="d-flex align-items-start gap-3">
+                                    <i class="fa-solid fa-circle-check text-primary fs-5 mt-1"></i>
+                                    <div><strong>Buyer Dispute Protection:</strong> If a code doesn't work, raise a dispute within 24 hours for a full refund.</div>
+                                </li>
+                            </ul>
+                            <a href="browse.html" class="btn btn-primary">Start Saving Today</a>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="p-4 p-md-5 rounded-4 bg-secondary-light border">
+                            <span class="badge bg-secondary text-white mb-2">For Sellers</span>
+                            <h3 class="fw-bold mb-3">Monetize Unused Rewards</h3>
+                            <ul class="list-unstyled d-flex flex-column gap-3 mb-4">
+                                <li class="d-flex align-items-start gap-3">
+                                    <i class="fa-solid fa-circle-check text-secondary fs-5 mt-1"></i>
+                                    <div><strong>Zero Upfront Cost:</strong> Listing eligible vouchers is completely free. We charge only 10% commission when sold.</div>
+                                </li>
+                                <li class="d-flex align-items-start gap-3">
+                                    <i class="fa-solid fa-circle-check text-secondary fs-5 mt-1"></i>
+                                    <div><strong>Smart Pricing Engine:</strong> Get algorithmic recommendations so your vouchers sell before expiring.</div>
+                                </li>
+                                <li class="d-flex align-items-start gap-3">
+                                    <i class="fa-solid fa-circle-check text-secondary fs-5 mt-1"></i>
+                                    <div><strong>Fast Payouts:</strong> Withdraw your cleared earnings safely to your registered UPI handle.</div>
+                                </li>
+                            </ul>
+                            <a href="upload-coupon.html" class="btn btn-outline-primary">List Your First Coupon</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="py-5 bg-page">
+            <div class="container py-4 max-w-800 mx-auto">
+                <div class="text-center mb-5">
+                    <span class="brand-pill">Got Questions?</span>
+                    <h2 class="fw-bold">Frequently Asked Questions</h2>
+                    <p class="text-muted">Everything you need to know about CouponLoop transferability, payments, and safety.</p>
+                </div>
+                <div class="accordion accordion-flush shadow-sm rounded-4 overflow-hidden border" id="faqAccordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                                Are all Google Pay, PhonePe, or Paytm coupons transferable?
+                            </button>
+                        </h2>
+                        <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body text-muted small">
+                                No. Direct UPI cashbacks and account-bound rewards cannot be transferred. CouponLoop only allows universal promotional coupon codes, voucher passes, and gift card claim codes whose issuer terms allow third-party redemption.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                                When is the coupon code revealed to the buyer?
+                            </button>
+                        </h2>
+                        <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body text-muted small">
+                                To protect sellers from code piracy and ensure buyers pay fairly, coupon codes remain encrypted and hidden until confirmed payment is recorded by our gateway sandbox.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                                What happens if a purchased coupon code does not work?
+                            </button>
+                        </h2>
+                        <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body text-muted small">
+                                Buyers can click "Report Invalid Coupon" on their dashboard within 24 hours. Our administrative review team verifies the claim against merchant redemption logs and issues a complete refund if the code is invalid.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                                What is the platform commission rate?
+                            </button>
+                        </h2>
+                        <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body text-muted small">
+                                CouponLoop charges a flat 10% marketplace commission upon successful sale. For example, if your coupon sells for ₹100, the platform retains ₹10 and you earn ₹90 net.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Global Footer -->
+    <footer class="footer-loop">
+        <div class="container">
+            <div class="row g-4 mb-4">
+                <div class="col-lg-4">
+                    <a class="navbar-brand mb-2" href="index.html">
+                        <div class="brand-icon"><i class="fa-solid fa-arrows-rotate"></i></div>
+                        <span>Coupon<span class="text-primary">Loop</span></span>
+                    </a>
+                    <p class="small text-muted mt-2">
+                        CouponLoop is a digital voucher marketplace turning unused promotional coupons into value. Exchange eligible, transferable vouchers safely.
+                    </p>
+                    <div class="d-flex gap-2 mt-3">
+                        <a href="#" class="btn btn-sm btn-outline-secondary rounded-circle"><i class="fa-brands fa-x-twitter"></i></a>
+                        <a href="#" class="btn btn-sm btn-outline-secondary rounded-circle"><i class="fa-brands fa-linkedin"></i></a>
+                        <a href="#" class="btn btn-sm btn-outline-secondary rounded-circle"><i class="fa-brands fa-github"></i></a>
+                    </div>
+                </div>
+                <div class="col-6 col-lg-2">
+                    <h6 class="fw-bold text-dark mb-3">Marketplace</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="browse.html" class="footer-link">Browse Coupons</a></li>
+                        <li><a href="upload-coupon.html" class="footer-link">Sell a Coupon</a></li>
+                        <li><a href="buyer-dashboard.html" class="footer-link">My Purchases</a></li>
+                        <li><a href="wishlist.html" class="footer-link">Saved Wishlist</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-lg-2">
+                    <h6 class="fw-bold text-dark mb-3">Company</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="about.html" class="footer-link">About Us</a></li>
+                        <li><a href="how-it-works.html" class="footer-link">How It Works</a></li>
+                        <li><a href="faq.html" class="footer-link">FAQ & Help</a></li>
+                        <li><a href="contact.html" class="footer-link">Contact Support</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4">
+                    <h6 class="fw-bold text-dark mb-3">Safety & Compliance</h6>
+                    <p class="small text-muted">
+                        Only vouchers whose issuer terms explicitly permit transfer or secondary redemption are permitted. Direct account cashbacks are rejected.
+                    </p>
+                    <ul class="list-unstyled d-flex flex-wrap gap-3 small">
+                        <li><a href="terms.html" class="footer-link">Terms & Conditions</a></li>
+                        <li><a href="privacy.html" class="footer-link">Privacy Policy</a></li>
+                        <li><a href="refund-policy.html" class="footer-link">Refund Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-top pt-3 d-flex flex-wrap justify-content-between align-items-center small text-muted">
+                <div>&copy; 2026 CouponLoop Technologies. All rights reserved.</div>
+                <div>Demo Sandbox Environment &bull; Built with Jakarta Servlets, JDBC & Tomcat 10</div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Load Categories
+            try {
+                const catRes = await API.coupons.categories();
+                if (catRes.success && catRes.data) {
+                    const catContainer = document.getElementById('categories-container');
+                    catContainer.innerHTML = catRes.data.map(c => `
+                        <div class="col">
+                            <a href="browse.html?category=${c.categoryId}" class="category-card">
+                                <div class="cat-icon-circle">
+                                    <i class="${c.iconClass || 'fa-solid fa-tag'}"></i>
+                                </div>
+                                <h6 class="fw-bold mb-1 small">${c.name}</h6>
+                                <span class="badge bg-light text-muted border">${c.couponCount || 0} Deals</span>
+                            </a>
+                        </div>
+                    `).join('');
+                }
+            } catch (e) {
+                console.error("Error loading categories:", e);
+            }
+
+            // Load Trending & Recent Coupons
+            try {
+                const trendingRes = await API.coupons.search({ limit: 4, sort: 'discount_desc' });
+                if (trendingRes.success && trendingRes.data) {
+                    renderCoupons('trending-container', trendingRes.data);
+                }
+
+                const recentRes = await API.coupons.search({ limit: 4, sort: 'newest' });
+                if (recentRes.success && recentRes.data) {
+                    renderCoupons('recent-container', recentRes.data);
+                }
+            } catch (e) {
+                console.error("Error loading coupons:", e);
+            }
+        });
+
+        function renderCoupons(containerId, list) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+
+            if (list.length === 0) {
+                container.innerHTML = '<div class="col-12 text-center py-4 text-muted">No active listings available at the moment.</div>';
+                return;
+            }
+
+            container.innerHTML = list.map(c => `
+                <div class="col-sm-6 col-lg-3">
+                    <div class="card-loop coupon-card">
+                        <div class="coupon-image-wrapper">
+                            <img src="${c.imageUrl || 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=600&auto=format&fit=crop&q=80'}" alt="${c.brandName}" class="coupon-image">
+                            <span class="badge bg-dark text-white coupon-badge-top">
+                                <i class="fa-solid fa-clock me-1 text-warning"></i>${c.daysToExpiry > 0 ? c.daysToExpiry + 'd left' : 'Today'}
+                            </span>
+                            <button class="wishlist-btn-overlay ${c.inWishlist ? 'active' : ''}" onclick="App.toggleWishlist(${c.couponId}, this)">
+                                <i class="${c.inWishlist ? 'fa-solid text-danger' : 'fa-regular'} fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="coupon-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="brand-pill">${c.brandName}</span>
+                                <span class="source-badge"><i class="fa-solid fa-tag"></i>${c.sourcePlatform}</span>
+                            </div>
+                            <h6 class="fw-bold text-dark text-truncate mt-1 mb-2" title="${c.title}">${c.title}</h6>
+                            <p class="text-muted small text-truncate-2 mb-2" style="font-size: 0.8rem; height: 38px;">${c.description}</p>
+                            
+                            <div class="price-box">
+                                <div>
+                                    <span class="selling-price">₹${Math.round(c.sellingPrice)}</span>
+                                    <span class="original-price">₹${Math.round(c.originalValue)}</span>
+                                </div>
+                                <span class="discount-tag">${Math.round(c.discountPercentage)}% OFF</span>
+                            </div>
+
+                            <div class="mt-auto d-flex gap-2">
+                                <a href="coupon-details.html?id=${c.couponId}" class="btn btn-sm btn-outline-primary flex-grow-1">Details</a>
+                                <button class="btn btn-sm btn-primary flex-grow-1" onclick="App.openCheckoutModal(${c.couponId})">
+                                    Buy Now
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+    </script>
+</body>
+</html>

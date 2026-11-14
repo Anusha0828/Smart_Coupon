@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browse Coupons – CouponLoop</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+    <!-- Main Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-loop">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <div class="brand-icon"><i class="fa-solid fa-arrows-rotate"></i></div>
+                <span>Coupon<span class="text-primary">Loop</span></span>
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                <i class="fa-solid fa-bars fs-4"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-3">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="browse.html">Browse Coupons</a></li>
+                    <li class="nav-item"><a class="nav-link" href="how-it-works.html">How It Works</a></li>
+                    <li class="nav-item"><a class="nav-link" href="upload-coupon.html">Sell Coupon</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">About Us</a></li>
+                </ul>
+                <div id="nav-auth-container" class="d-flex align-items-center gap-2"></div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="py-4">
+        <div class="container">
+            <!-- Header & Search Bar -->
+            <div class="p-4 p-md-5 rounded-4 bg-white border shadow-sm mb-4">
+                <div class="row align-items-center gy-3">
+                    <div class="col-lg-6">
+                        <span class="brand-pill mb-2">Verified Vouchers Marketplace</span>
+                        <h2 class="fw-bold mb-1">Discover & Buy Transferable Coupons</h2>
+                        <p class="text-muted small mb-0">Save up to 80% on leading food delivery, travel, entertainment, and e-commerce brands.</p>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="input-group shadow-sm">
+                            <span class="input-group-text bg-white border-end-0 ps-3">
+                                <i class="fa-solid fa-magnifying-glass text-muted"></i>
+                            </span>
+                            <input type="text" id="search-input" class="form-control border-start-0 py-2.5" placeholder="Search brand, category, or offer (e.g. Swiggy, Myntra, Flight)...">
+                            <button class="btn btn-primary px-4" onclick="applyFilters()">Search</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Area with Filter Sidebar and Grid -->
+            <div class="row g-4">
+                <!-- Filters Column -->
+                <div class="col-lg-3">
+                    <div class="filter-card">
+                        <div class="d-flex justify-content-between align-items-center pb-2 mb-3 border-bottom">
+                            <h6 class="fw-bold mb-0"><i class="fa-solid fa-sliders me-2 text-primary"></i>Filters</h6>
+                            <button class="btn btn-link btn-sm p-0 text-decoration-none" onclick="resetFilters()">Reset All</button>
+                        </div>
+
+                        <!-- Category Filter -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold small text-muted">CATEGORY</label>
+                            <select id="filter-category" class="form-select form-select-sm" onchange="applyFilters()">
+                                <option value="">All Categories</option>
+                            </select>
+                        </div>
+
+                        <!-- Brand Filter -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold small text-muted">BRAND</label>
+                            <select id="filter-brand" class="form-select form-select-sm" onchange="applyFilters()">
+                                <option value="">All Brands</option>
+                            </select>
+                        </div>
+
+                        <!-- Expiry Filter -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold small text-muted">VALIDITY / EXPIRY</label>
+                            <select id="filter-expiry" class="form-select form-select-sm" onchange="applyFilters()">
+                                <option value="">Any Validity</option>
+                                <option value="3">Expiring in 3 Days (Urgent)</option>
+                                <option value="7">Expiring in 7 Days</option>
+                                <option value="15">Expiring in 15 Days</option>
+                                <option value="30">Expiring in 30 Days</option>
+                            </select>
+                        </div>
+
+                        <!-- Price Range Filter -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold small text-muted">MAX SELLING PRICE</label>
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="small text-muted">₹10</span>
+                                <input type="range" class="form-range" id="filter-price-slider" min="10" max="1000" step="10" value="1000" oninput="updatePriceLabel(this.value)" onchange="applyFilters()">
+                                <span class="small fw-bold text-primary" id="price-slider-val">₹1000</span>
+                            </div>
+                        </div>
+
+                        <!-- Transferability Guarantee Notice -->
+                        <div class="p-3 bg-light rounded-3 border small text-muted">
+                            <i class="fa-solid fa-shield-halved text-success me-1"></i>
+                            <strong>LoopGuarantee:</strong> Every coupon is screened for merchant transfer rights.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Coupons Grid Column -->
+                <div class="col-lg-9">
+                    <!-- Sorting & Results Summary Bar -->
+                    <div class="d-flex flex-wrap justify-content-between align-items-center bg-white p-3 rounded-3 border shadow-sm mb-4">
+                        <div class="small text-muted">
+                            Showing <strong id="results-count" class="text-dark">0</strong> available vouchers
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                            <label for="sort-select" class="small text-muted mb-0 text-nowrap">Sort By:</label>
+                            <select id="sort-select" class="form-select form-select-sm w-auto" onchange="applyFilters()">
+                                <option value="newest" selected>Newest First</option>
+                                <option value="price_asc">Price: Low to High</option>
+                                <option value="price_desc">Price: High to Low</option>
+                                <option value="discount_desc">Highest Cash Savings</option>
+                                <option value="discount_pct_desc">Highest Discount %</option>
+                                <option value="expiring_soon">Expiring Soonest</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Coupons Container -->
+                    <div class="row g-3" id="coupons-grid">
+                        <div class="col-12 text-center py-5">
+                            <div class="spinner-border text-primary" role="status"></div>
+                            <div class="mt-2 text-muted small">Loading vouchers...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Global Footer -->
+    <footer class="footer-loop">
+        <div class="container text-center small text-muted">
+            &copy; 2026 CouponLoop Technologies &bull; <a href="terms.html" class="footer-link">Terms</a> &bull; <a href="privacy.html" class="footer-link">Privacy</a> &bull; <a href="refund-policy.html" class="footer-link">Refund Policy</a>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/app.js"></script>
+    <script>
+        let currentCategories = [];
+        let currentBrands = [];
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Check URL search parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const initialCategory = urlParams.get('category');
+            const initialSort = urlParams.get('sort');
+            const initialQuery = urlParams.get('q');
+
+            if (initialSort) document.getElementById('sort-select').value = initialSort;
+            if (initialQuery) document.getElementById('search-input').value = initialQuery;
+
+            await loadFilterOptions(initialCategory);
+            applyFilters();
+
+            // Search on Enter key
+            document.getElementById('search-input').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') applyFilters();
+            });
+        });
+
+        async function loadFilterOptions(selectedCatId) {
+            try {
+                const [catRes, brandRes] = await Promise.all([
+                    API.coupons.categories(),
+                    API.coupons.brands()
+                ]);
+
+                if (catRes.success && catRes.data) {
+                    currentCategories = catRes.data;
+                    const catSelect = document.getElementById('filter-category');
+                    catSelect.innerHTML = '<option value="">All Categories</option>' + 
+                        catRes.data.map(c => `<option value="${c.categoryId}" ${selectedCatId == c.categoryId ? 'selected' : ''}>${c.name} (${c.couponCount})</option>`).join('');
+                }
+
+                if (brandRes.success && brandRes.data) {
+                    currentBrands = brandRes.data;
+                    const brandSelect = document.getElementById('filter-brand');
+                    brandSelect.innerHTML = '<option value="">All Brands</option>' + 
+                        brandRes.data.map(b => `<option value="${b}">${b}</option>`).join('');
+                }
+            } catch (err) {
+                console.error("Failed to load filter choices:", err);
+            }
+        }
+
+        function updatePriceLabel(val) {
+            document.getElementById('price-slider-val').innerText = '₹' + val;
+        }
+
+        async function applyFilters() {
+            const grid = document.getElementById('coupons-grid');
+            grid.innerHTML = '<div class="col-12 text-center py-5"><div class="spinner-border text-primary"></div><div class="mt-2 text-muted small">Searching marketplace...</div></div>';
+
+            const query = document.getElementById('search-input').value.trim();
+            const category = document.getElementById('filter-category').value;
+            const brand = document.getElementById('filter-brand').value;
+            const expiringDays = document.getElementById('filter-expiry').value;
+            const maxPrice = document.getElementById('filter-price-slider').value;
+            const sort = document.getElementById('sort-select').value;
+
+            const params = { sort };
+            if (query) params.q = query;
+            if (category) params.category = category;
+            if (brand) params.brand = brand;
+            if (expiringDays) params.expiringDays = expiringDays;
+            if (maxPrice && Number(maxPrice) < 1000) params.maxPrice = maxPrice;
+
+            try {
+                const res = await API.coupons.search(params);
+                if (res.success && res.data) {
+                    renderGrid(res.data);
+                } else {
+                    grid.innerHTML = '<div class="col-12 text-center py-5 text-muted">No coupons matched your filters.</div>';
+                }
+            } catch (err) {
+                grid.innerHTML = `<div class="col-12 text-center py-5 text-danger">Error: ${err.message}</div>`;
+            }
+        }
+
+        function renderGrid(coupons) {
+            const grid = document.getElementById('coupons-grid');
+            document.getElementById('results-count').innerText = coupons.length;
+
+            if (coupons.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-12 text-center py-5">
+                        <div class="cat-icon-circle bg-light text-muted mb-3" style="width:70px;height:70px;font-size:2rem;">
+                            <i class="fa-solid fa-ticket"></i>
+                        </div>
+                        <h5 class="fw-bold">No Coupons Found</h5>
+                        <p class="text-muted small">Try broadening your search term or adjusting price/category filters.</p>
+                        <button class="btn btn-outline-primary btn-sm" onclick="resetFilters()">Reset All Filters</button>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = coupons.map(c => `
+                <div class="col-sm-6 col-md-4">
+                    <div class="card-loop coupon-card">
+                        <div class="coupon-image-wrapper">
+                            <img src="${c.imageUrl || 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=600&auto=format&fit=crop&q=80'}" alt="${c.brandName}" class="coupon-image">
+                            <span class="badge ${c.daysToExpiry <= 3 ? 'bg-danger' : 'bg-dark'} text-white coupon-badge-top">
+                                <i class="fa-solid fa-clock me-1 text-warning"></i>${c.daysToExpiry > 0 ? c.daysToExpiry + 'd left' : 'Expires Today'}
+                            </span>
+                            <button class="wishlist-btn-overlay ${c.inWishlist ? 'active' : ''}" onclick="App.toggleWishlist(${c.couponId}, this)">
+                                <i class="${c.inWishlist ? 'fa-solid text-danger' : 'fa-regular'} fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="coupon-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="brand-pill">${c.brandName}</span>
+                                <span class="source-badge" title="Source platform"><i class="fa-solid fa-tag"></i>${c.sourcePlatform}</span>
+                            </div>
+                            <h6 class="fw-bold text-dark text-truncate mt-1 mb-1" title="${c.title}">${c.title}</h6>
+                            <div class="small text-muted mb-2"><i class="fa-solid fa-user me-1"></i>Seller: ${c.sellerName} &bull; <i class="fa-solid fa-star text-warning"></i> ${c.sellerRating}</div>
+                            
+                            <div class="price-box mt-auto">
+                                <div>
+                                    <span class="selling-price">₹${Math.round(c.sellingPrice)}</span>
+                                    <span class="original-price">₹${Math.round(c.originalValue)}</span>
+                                </div>
+                                <span class="discount-tag">${Math.round(c.discountPercentage)}% OFF</span>
+                            </div>
+
+                            <div class="d-flex gap-2 mt-2">
+                                <a href="coupon-details.html?id=${c.couponId}" class="btn btn-sm btn-outline-primary flex-grow-1">Details</a>
+                                <button class="btn btn-sm btn-primary flex-grow-1" onclick="App.openCheckoutModal(${c.couponId})">
+                                    Buy Now
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function resetFilters() {
+            document.getElementById('search-input').value = '';
+            document.getElementById('filter-category').value = '';
+            document.getElementById('filter-brand').value = '';
+            document.getElementById('filter-expiry').value = '';
+            document.getElementById('filter-price-slider').value = 1000;
+            document.getElementById('price-slider-val').innerText = '₹1000';
+            document.getElementById('sort-select').value = 'newest';
+            applyFilters();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard – CouponLoop</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="bg-light">
+
+    <!-- Main Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-loop bg-white border-bottom">
+        <div class="container-fluid px-lg-4">
+            <a class="navbar-brand" href="index.html">
+                <div class="brand-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                <span>CouponLoop <span class="badge bg-danger ms-2" style="font-size:0.7rem;">ADMIN PANEL</span></span>
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                <i class="fa-solid fa-bars fs-4"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-3">
+                    <li class="nav-item"><a class="nav-link" href="index.html"><i class="fa-solid fa-globe me-1"></i> View Main Site</a></li>
+                    <li class="nav-item"><a class="nav-link" href="browse.html">Browse Marketplace</a></li>
+                </ul>
+                <div id="nav-auth-container" class="d-flex align-items-center gap-2"></div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="py-4">
+        <div class="container-fluid px-lg-4">
+            
+            <!-- Admin Metric Summary Cards -->
+            <div class="row g-3 mb-4">
+                <div class="col-sm-6 col-md-3">
+                    <div class="stat-widget">
+                        <div>
+                            <div class="stat-label">Total Users</div>
+                            <div class="stat-value" id="adm-users">0</div>
+                            <div class="small text-muted"><span id="adm-sellers">0</span> sellers &bull; <span id="adm-buyers">0</span> buyers</div>
+                        </div>
+                        <div class="stat-icon bg-primary-light text-primary"><i class="fa-solid fa-users"></i></div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <div class="stat-widget">
+                        <div>
+                            <div class="stat-label">Total Listings</div>
+                            <div class="stat-value" id="adm-listings">0</div>
+                            <div class="small text-muted"><span id="adm-active" class="text-success fw-bold">0</span> active &bull; <span id="adm-sold" class="text-primary fw-bold">0</span> sold</div>
+                        </div>
+                        <div class="stat-icon bg-info-subtle text-info"><i class="fa-solid fa-tags"></i></div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <div class="stat-widget">
+                        <div>
+                            <div class="stat-label">Platform Commission</div>
+                            <div class="stat-value text-success" id="adm-commission">₹0</div>
+                            <div class="small text-muted">10% standard marketplace fee</div>
+                        </div>
+                        <div class="stat-icon bg-success-subtle text-success"><i class="fa-solid fa-sack-dollar"></i></div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <div class="stat-widget">
+                        <div>
+                            <div class="stat-label">Pending Disputes</div>
+                            <div class="stat-value text-danger" id="adm-disputes">0</div>
+                            <div class="small text-muted">Claims awaiting admin action</div>
+                        </div>
+                        <div class="stat-icon bg-danger-subtle text-danger"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Admin Management Tabs -->
+            <div class="card-loop p-4 mb-4">
+                <ul class="nav nav-pills gap-2 mb-4 border-bottom pb-3" id="adminTabs" role="tablist">
+                    <li class="nav-item">
+                        <button class="nav-link active rounded-pill px-3.5" data-bs-toggle="pill" data-bs-target="#tab-overview">
+                            <i class="fa-solid fa-chart-pie me-1"></i> Analytics Overview
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link rounded-pill px-3.5" data-bs-toggle="pill" data-bs-target="#tab-users" onclick="loadAdminUsers()">
+                            <i class="fa-solid fa-user-gear me-1"></i> User Management
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link rounded-pill px-3.5 position-relative" data-bs-toggle="pill" data-bs-target="#tab-coupons" onclick="loadAdminCoupons('PENDING')">
+                            <i class="fa-solid fa-stamp me-1"></i> Coupon Approval Management
+                            <span class="badge bg-warning text-dark rounded-pill ms-1" id="pending-coupons-badge">0</span>
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link rounded-pill px-3.5 position-relative" data-bs-toggle="pill" data-bs-target="#tab-disputes" onclick="loadAdminDisputes()">
+                            <i class="fa-solid fa-scale-balanced me-1"></i> Dispute Resolution
+                            <span class="badge bg-danger rounded-pill ms-1" id="dispute-tab-badge">0</span>
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link rounded-pill px-3.5" data-bs-toggle="pill" data-bs-target="#tab-txns" onclick="loadAdminTransactions()">
+                            <i class="fa-solid fa-receipt me-1"></i> Transactions
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link rounded-pill px-3.5" data-bs-toggle="pill" data-bs-target="#tab-categories" onclick="loadAdminCategories()">
+                            <i class="fa-solid fa-layer-group me-1"></i> Categories
+                        </button>
+                    </li>
+                </ul>
+
+                <div class="tab-content" id="adminTabsContent">
+                    
+                    <!-- TAB 1: Analytics Overview -->
+                    <div class="tab-pane fade show active" id="tab-overview">
+                        <div class="row g-4">
+                            <div class="col-lg-6">
+                                <div class="p-3 border rounded-3 bg-white h-100">
+                                    <h6 class="fw-bold mb-3">Gross Volume & Commission Growth</h6>
+                                    <div style="height: 280px; position: relative;">
+                                        <canvas id="monthlyVolumeChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="p-3 border rounded-3 bg-white h-100">
+                                    <h6 class="fw-bold mb-3">Category Distribution</h6>
+                                    <div style="height: 280px; position: relative;">
+                                        <canvas id="categoryDistributionChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 2: User Management -->
+                    <div class="tab-pane fade" id="tab-users">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h6 class="fw-bold mb-0">Platform Registered Accounts</h6>
+                            <input type="text" id="user-filter-input" class="form-control form-control-sm w-auto" placeholder="Filter by email/name..." onkeyup="filterUserTable(this.value)">
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle small mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>User ID</th>
+                                        <th>Full Name</th>
+                                        <th>Email</th>
+                                        <th>Mobile</th>
+                                        <th>Role</th>
+                                        <th>Status</th>
+                                        <th>UPI Address</th>
+                                        <th class="text-end">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-users-tbody">
+                                    <tr><td colspan="8" class="text-center py-4 text-muted">Loading users...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- TAB 3: Coupon Approval Management -->
+                    <div class="tab-pane fade" id="tab-coupons">
+                        <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 pb-2 border-bottom gap-2">
+                            <div>
+                                <h5 class="fw-bold mb-1"><i class="fa-solid fa-stamp text-primary me-2"></i>Coupon Approval Management</h5>
+                                <p class="text-muted small mb-0">Review seller submissions, verify issuer transferability, and approve or reject listings before they appear in the buyer marketplace.</p>
+                            </div>
+                            <div class="btn-group btn-group-sm" role="group">
+                                <button type="button" class="btn btn-warning fw-bold active" id="btn-filter-pending" onclick="filterAdminCoupons('PENDING')">
+                                    <i class="fa-solid fa-hourglass-half me-1"></i>Pending Approvals <span class="badge bg-dark ms-1" id="filter-pending-count">0</span>
+                                </button>
+                                <button type="button" class="btn btn-outline-success" id="btn-filter-approved" onclick="filterAdminCoupons('APPROVED')">
+                                    <i class="fa-solid fa-circle-check me-1"></i>Approved Coupons
+                                </button>
+                                <button type="button" class="btn btn-outline-danger" id="btn-filter-rejected" onclick="filterAdminCoupons('REJECTED')">
+                                    <i class="fa-solid fa-ban me-1"></i>Rejected Coupons
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary" id="btn-filter-all" onclick="filterAdminCoupons('ALL')">
+                                    All Listings
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle small mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th style="width: 50px;">ID</th>
+                                        <th style="min-width: 220px;">Coupon & Brand</th>
+                                        <th>Platform & Category</th>
+                                        <th>Original vs Selling Price</th>
+                                        <th>Expiry Date</th>
+                                        <th style="min-width: 160px;">Seller Details</th>
+                                        <th>Transferability</th>
+                                        <th>Status</th>
+                                        <th class="text-end" style="min-width: 180px;">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-coupons-tbody">
+                                    <tr><td colspan="9" class="text-center py-4 text-muted">Loading pending coupons...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- TAB 4: Dispute Resolution -->
+                    <div class="tab-pane fade" id="tab-disputes">
+                        <h6 class="fw-bold mb-3">Open Disputes & Invalid Voucher Claims</h6>
+                        <div class="table-responsive mb-4">
+                            <table class="table table-hover align-middle small mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Dispute ID</th>
+                                        <th>Buyer</th>
+                                        <th>Seller</th>
+                                        <th>Coupon</th>
+                                        <th>Reason & Claim Details</th>
+                                        <th>Status</th>
+                                        <th class="text-end">Resolution</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-disputes-tbody">
+                                    <tr><td colspan="7" class="text-center py-4 text-muted">Loading disputes...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h6 class="fw-bold mb-3 pt-3 border-top">Reported Listings</h6>
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle small mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Report ID</th>
+                                        <th>Coupon</th>
+                                        <th>Reporter</th>
+                                        <th>Reason</th>
+                                        <th>Details</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-reports-tbody">
+                                    <tr><td colspan="6" class="text-center py-3 text-muted">No pending reports.</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- TAB 5: Transactions -->
+                    <div class="tab-pane fade" id="tab-txns">
+                        <h6 class="fw-bold mb-3">Platform Payments & Commission Settlements</h6>
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle small mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Transaction ID</th>
+                                        <th>Date</th>
+                                        <th>Buyer</th>
+                                        <th>Seller</th>
+                                        <th>Voucher</th>
+                                        <th>Amount</th>
+                                        <th>Platform 10%</th>
+                                        <th>Net Seller</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-txns-tbody">
+                                    <tr><td colspan="9" class="text-center py-4 text-muted">Loading ledger...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- TAB 6: Categories -->
+                    <div class="tab-pane fade" id="tab-categories">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h6 class="fw-bold mb-0">Marketplace Categories</h6>
+                            <button class="btn btn-sm btn-primary" onclick="openAddCategoryModal()">
+                                <i class="fa-solid fa-plus me-1"></i> Add Category
+                            </button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle small mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Icon</th>
+                                        <th>Category Name</th>
+                                        <th>Slug</th>
+                                        <th>Description</th>
+                                        <th>Active Deals</th>
+                                        <th>Status</th>
+                                        <th class="text-end">Toggle</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-categories-tbody">
+                                    <tr><td colspan="8" class="text-center py-4 text-muted">Loading categories...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Dispute Resolution Modal -->
+    <div class="modal fade" id="resolveDisputeModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg" style="border-radius:16px;">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold">Resolve Dispute Case</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="resolve-dispute-id">
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Resolution Decision <span class="text-danger">*</span></label>
+                        <select id="resolve-decision" class="form-select">
+                            <option value="RESOLVED_REFUND">Approve Full Refund to Buyer (Cancel Seller Earning)</option>
+                            <option value="RESOLVED_REJECTED">Reject Dispute (Dismiss Claim & Keep Seller Earnings)</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Administrative Findings & Notes <span class="text-danger">*</span></label>
+                        <textarea id="resolve-notes" class="form-control" rows="3" placeholder="Explain the verification outcome..." required></textarea>
+                    </div>
+                    <div id="resolve-alert" class="alert d-none small mb-0"></div>
+                </div>
+                <div class="modal-footer border-0 pt-0">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="submitDisputeResolution()">Execute Decision</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Category Modal -->
+    <div class="modal fade" id="addCategoryModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg" style="border-radius:16px;">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold">Add Category</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Category Name <span class="text-danger">*</span></label>
+                        <input type="text" id="new-cat-name" class="form-control" placeholder="e.g. Health & Wellness" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">URL Slug <span class="text-danger">*</span></label>
+                        <input type="text" id="new-cat-slug" class="form-control" placeholder="e.g. health-wellness" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Font Awesome Icon Class</label>
+                        <input type="text" id="new-cat-icon" class="form-control" placeholder="fa-solid fa-heart-pulse" value="fa-solid fa-tag">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Description</label>
+                        <textarea id="new-cat-desc" class="form-control" rows="2"></textarea>
+                    </div>
+                    <div id="new-cat-alert" class="alert d-none small mb-0"></div>
+                </div>
+                <div class="modal-footer border-0 pt-0">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="submitCreateCategory()">Create Category</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reject Coupon Modal -->
+    <div class="modal fade" id="adminRejectCouponModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg" style="border-radius:16px;">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold text-danger"><i class="fa-solid fa-ban me-2"></i>Reject Coupon Listing</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="reject-coupon-id">
+                    <p class="small text-muted mb-2">Coupon: <strong id="reject-coupon-title" class="text-dark"></strong></p>
+                    
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Reason for Rejection <span class="text-danger">*</span></label>
+                        <textarea id="reject-reason-text" class="form-control" rows="3" placeholder="Explain why this coupon is being rejected (the seller will receive this reason)..." required></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small text-muted mb-1">Quick Reasons:</label>
+                        <div class="d-flex flex-wrap gap-1">
+                            <button type="button" class="btn btn-outline-secondary btn-sm py-0 px-2" style="font-size:0.75rem;" onclick="setRejectPreset('Direct account-linked cashback or personalized reward (non-transferable).')">Account-Bound</button>
+                            <button type="button" class="btn btn-outline-secondary btn-sm py-0 px-2" style="font-size:0.75rem;" onclick="setRejectPreset('Coupon issuer terms prohibit resale or third-party transfer.')">Non-Transferable</button>
+                            <button type="button" class="btn btn-outline-secondary btn-sm py-0 px-2" style="font-size:0.75rem;" onclick="setRejectPreset('Invalid or incomplete voucher claim code.')">Invalid Code</button>
+                            <button type="button" class="btn btn-outline-secondary btn-sm py-0 px-2" style="font-size:0.75rem;" onclick="setRejectPreset('Selling price exceeds the face discount value.')">Excessive Price</button>
+                        </div>
+                    </div>
+
+                    <div id="reject-alert" class="alert d-none small mb-0"></div>
+                </div>
+                <div class="modal-footer border-0 pt-0">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" id="confirm-reject-btn" class="btn btn-danger btn-sm px-3" onclick="submitAdminRejectCoupon()">
+                        <i class="fa-solid fa-ban me-1"></i> Confirm Rejection
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/chart-analytics.js"></script>
+    <script src="assets/js/app.js"></script>
+    <script>
+        let allAdminUsers = [];
+        let resolveModalInstance = null;
+        let addCatModalInstance = null;
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadAdminOverview();
+        });
+
+        async function loadAdminOverview() {
+            try {
+                const res = await API.admin.overview();
+                if (res.success && res.data) {
+                    const d = res.data;
+                    document.getElementById('adm-users').innerText = d.totalUsers || 0;
+                    document.getElementById('adm-sellers').innerText = d.totalSellers || 0;
+                    document.getElementById('adm-buyers').innerText = d.totalBuyers || 0;
+
+                    document.getElementById('adm-listings').innerText = d.totalListings || 0;
+                    document.getElementById('adm-active').innerText = d.activeCoupons || 0;
+                    document.getElementById('adm-sold').innerText = d.soldCoupons || 0;
+
+                    document.getElementById('adm-commission').innerText = '₹' + Math.round(d.totalCommission || 0);
+                    document.getElementById('adm-disputes').innerText = d.pendingDisputes || 0;
+                    document.getElementById('dispute-tab-badge').innerText = d.pendingDisputes || 0;
+                    document.getElementById('pending-coupons-badge').innerText = d.pendingApprovals || 0;
+                    if (document.getElementById('filter-pending-count')) {
+                        document.getElementById('filter-pending-count').innerText = d.pendingApprovals || 0;
+                    }
+                }
+
+                // Load Analytics Charts
+                const analyticsRes = await API.admin.analytics();
+                if (analyticsRes.success && analyticsRes.data) {
+                    ChartAnalytics.renderCategoryDistribution('categoryDistributionChart', analyticsRes.data.categoryDistribution || []);
+                }
+                ChartAnalytics.renderMonthlyVolume('monthlyVolumeChart');
+
+            } catch (err) {
+                console.error("Admin overview failed:", err);
+            }
+        }
+
+        async function loadAdminUsers() {
+            try {
+                const res = await API.admin.users();
+                if (res.success && res.data) {
+                    allAdminUsers = res.data;
+                    renderUsersTable(allAdminUsers);
+                }
+            } catch (err) {
+                console.error("Users load failed:", err);
+            }
+        }
+
+        function renderUsersTable(users) {
+            const tbody = document.getElementById('admin-users-tbody');
+            if (users.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" class="text-center py-3 text-muted">No users found.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = users.map(u => `
+                <tr>
+                    <td>#${u.userId}</td>
+                    <td class="fw-bold">${u.fullName}</td>
+                    <td>${u.email}</td>
+                    <td>${u.mobile}</td>
+                    <td><span class="badge ${u.role === 'ADMIN' ? 'bg-danger' : (u.role === 'SELLER' ? 'bg-primary' : 'bg-secondary')}">${u.role}</span></td>
+                    <td>
+                        <span class="badge ${u.status === 'ACTIVE' ? 'bg-success' : 'bg-warning text-dark'}">
+                            ${u.status}
+                        </span>
+                    </td>
+                    <td><code>${u.upiId || '—'}</code></td>
+                    <td class="text-end">
+                        ${u.role !== 'ADMIN' ? `
+                            <button class="btn btn-sm ${u.status === 'ACTIVE' ? 'btn-outline-danger' : 'btn-outline-success'} py-0 px-2" onclick="toggleUserStatus(${u.userId}, '${u.status === 'ACTIVE' ? 'SUSPENDED' : 'ACTIVE'}')">
+                                ${u.status === 'ACTIVE' ? 'Suspend' : 'Activate'}
+                            </button>
+                        ` : '<span class="text-muted small">Protected</span>'}
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function filterUserTable(val) {
+            const query = val.toLowerCase().trim();
+            const filtered = allAdminUsers.filter(u => u.fullName.toLowerCase().includes(query) || u.email.toLowerCase().includes(query));
+            renderUsersTable(filtered);
+        }
+
+        async function toggleUserStatus(userId, newStatus) {
+            if (!confirm(`Are you sure you want to change user status to ${newStatus}?`)) return;
+            try {
+                const res = await API.admin.toggleUserStatus(userId, newStatus);
+                if (res.success) {
+                    App.showToast(res.message, "success");
+                    loadAdminUsers();
+                }
+            } catch (err) {
+                App.showToast(err.message, "error");
+            }
+        }
+
+        let currentCouponFilter = 'PENDING';
+        let adminRejectModalInstance = null;
+
+        function filterAdminCoupons(status) {
+            currentCouponFilter = status;
+            document.getElementById('btn-filter-pending').className = status === 'PENDING' ? 'btn btn-warning fw-bold active' : 'btn btn-outline-warning';
+            document.getElementById('btn-filter-approved').className = status === 'APPROVED' ? 'btn btn-success fw-bold active' : 'btn btn-outline-success';
+            document.getElementById('btn-filter-rejected').className = status === 'REJECTED' ? 'btn btn-danger fw-bold active' : 'btn btn-outline-danger';
+            document.getElementById('btn-filter-all').className = status === 'ALL' ? 'btn btn-secondary fw-bold active' : 'btn btn-outline-secondary';
+            loadAdminCoupons(status);
+        }
+
+        async function loadAdminCoupons(status = currentCouponFilter) {
+            try {
+                const res = await API.admin.coupons(status);
+                if (res.success && res.data) {
+                    const tbody = document.getElementById('admin-coupons-tbody');
+                    if (res.data.length === 0) {
+                        tbody.innerHTML = `<tr><td colspan="9" class="text-center py-4 text-muted">
+                            <i class="fa-solid fa-inbox fs-4 d-block mb-2 text-secondary"></i>
+                            No ${status === 'ALL' ? '' : status.toLowerCase()} coupons found.
+                        </td></tr>`;
+                        return;
+                    }
+
+                    tbody.innerHTML = res.data.map(c => {
+                        const safeTitle = (c.title || '').replace(/'/g, "\\'");
+                        const imgUrl = c.imageUrl || 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=600&auto=format&fit=crop&q=80';
+
+                        let statusBadge = '<span class="badge bg-warning text-dark"><i class="fa-solid fa-clock me-1"></i>PENDING</span>';
+                        if (c.status === 'APPROVED' || c.status === 'ACTIVE') {
+                            statusBadge = '<span class="badge bg-success"><i class="fa-solid fa-circle-check me-1"></i>APPROVED</span>';
+                        } else if (c.status === 'REJECTED') {
+                            statusBadge = `<div><span class="badge bg-danger"><i class="fa-solid fa-ban me-1"></i>REJECTED</span></div>
+                                           <div class="text-danger small mt-1" style="font-size:0.7rem;"><strong>Reason:</strong> ${c.rejectionReason || '—'}</div>`;
+                        } else if (c.status === 'SOLD') {
+                            statusBadge = '<span class="badge bg-primary">SOLD</span>';
+                        } else if (c.status === 'EXPIRED') {
+                            statusBadge = '<span class="badge bg-secondary">EXPIRED</span>';
+                        }
+
+                        let actionHtml = '';
+                        if (c.status === 'PENDING') {
+                            actionHtml = `
+                                <div class="d-flex flex-column gap-1 align-items-end">
+                                    <button class="btn btn-sm btn-success px-2 py-1 shadow-sm w-100" style="font-size:0.75rem;" onclick="approveAdminCoupon(${c.couponId})">
+                                        <i class="fa-solid fa-check me-1"></i>Approve Coupon
+                                    </button>
+                                    <button class="btn btn-sm btn-danger px-2 py-1 shadow-sm w-100" style="font-size:0.75rem;" onclick="openAdminRejectModal(${c.couponId}, '${safeTitle}')">
+                                        <i class="fa-solid fa-xmark me-1"></i>Reject Coupon
+                                    </button>
+                                </div>
+                            `;
+                        } else if (c.status === 'APPROVED' || c.status === 'ACTIVE') {
+                            actionHtml = `
+                                <span class="badge bg-success-subtle text-success mb-1 d-inline-block"><i class="fa-solid fa-eye me-1"></i>In Marketplace</span>
+                                <button class="btn btn-sm btn-outline-danger py-0 px-2 d-block" style="font-size:0.72rem;" onclick="openAdminRejectModal(${c.couponId}, '${safeTitle}')">
+                                    Revoke / Reject
+                                </button>
+                            `;
+                        } else if (c.status === 'REJECTED') {
+                            actionHtml = `
+                                <span class="badge bg-danger-subtle text-danger mb-1 d-inline-block"><i class="fa-solid fa-eye-slash me-1"></i>Hidden</span>
+                                <button class="btn btn-sm btn-outline-success py-0 px-2 d-block" style="font-size:0.72rem;" onclick="approveAdminCoupon(${c.couponId})">
+                                    Approve Now
+                                </button>
+                            `;
+                        } else {
+                            actionHtml = '<span class="text-muted small">Locked</span>';
+                        }
+
+                        return `
+                            <tr>
+                                <td><span class="badge bg-light text-dark border">#${c.couponId}</span></td>
+                                <td>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <img src="${imgUrl}" alt="${c.brandName}" class="rounded border" style="width:42px; height:42px; object-fit:cover;">
+                                        <div>
+                                            <div class="fw-bold text-dark text-truncate" style="max-width:220px;" title="${c.title}">${c.title}</div>
+                                            <div class="text-muted small" style="font-size:0.72rem;">Code: <code class="text-primary font-monospace">${c.couponCode}</code></div>
+                                            <div class="text-muted small text-truncate" style="font-size:0.72rem; max-width:220px;">${c.description}</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div><span class="badge bg-primary-light text-primary fw-bold">${c.brandName}</span></div>
+                                    <div class="text-muted small mt-1" style="font-size:0.75rem;">Source: <strong>${c.sourcePlatform}</strong></div>
+                                    <div class="text-muted small" style="font-size:0.72rem;">Cat: ${c.categoryName || '—'}</div>
+                                </td>
+                                <td>
+                                    <div class="fw-bold text-success">Selling: ₹${Math.round(c.sellingPrice)}</div>
+                                    <div class="text-muted small" style="font-size:0.75rem;">Face: <del>₹${Math.round(c.originalValue)}</del></div>
+                                    <span class="badge bg-success-subtle text-success" style="font-size:0.7rem;">${Math.round(c.discountPercentage)}% OFF</span>
+                                </td>
+                                <td>
+                                    <div>${c.expiryDate}</div>
+                                    <span class="badge ${c.daysToExpiry <= 3 ? 'bg-danger' : 'bg-light text-muted border'}" style="font-size:0.7rem;">
+                                        ${c.daysToExpiry > 0 ? c.daysToExpiry + 'd remaining' : 'Expired'}
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="fw-bold text-dark">${c.sellerName}</div>
+                                    <div class="text-muted" style="font-size:0.75rem;">${c.sellerEmail || '—'}</div>
+                                    <div class="text-muted" style="font-size:0.7rem;">ID: #${c.sellerId}</div>
+                                </td>
+                                <td>
+                                    <span class="badge bg-success-subtle text-success border border-success-subtle" style="font-size:0.7rem;">
+                                        <i class="fa-solid fa-circle-check me-1"></i>Confirmed
+                                    </span>
+                                    <div class="text-muted mt-1" style="font-size:0.68rem;">Added: ${(c.createdAt ? c.createdAt.split(' ')[0] : 'Today')}</div>
+                                </td>
+                                <td>${statusBadge}</td>
+                                <td class="text-end">${actionHtml}</td>
+                            </tr>
+                        `;
+                    }).join('');
+                }
+            } catch (err) {
+                console.error("Coupons load failed:", err);
+            }
+        }
+
+        async function approveAdminCoupon(couponId) {
+            if (!confirm('Are you sure you want to approve this coupon? It will immediately become visible to buyers in the marketplace.')) return;
+            try {
+                const res = await API.admin.approveCoupon(couponId);
+                if (res.success) {
+                    App.showToast(res.message || "Coupon approved successfully. It is now available in the marketplace.", "success");
+                    await loadAdminOverview();
+                    loadAdminCoupons(currentCouponFilter);
+                }
+            } catch (err) {
+                App.showToast(err.message, "error");
+            }
+        }
+
+        function openAdminRejectModal(couponId, title) {
+            document.getElementById('reject-coupon-id').value = couponId;
+            document.getElementById('reject-coupon-title').innerText = title;
+            document.getElementById('reject-reason-text').value = '';
+            document.getElementById('reject-alert').classList.add('d-none');
+            adminRejectModalInstance = new bootstrap.Modal(document.getElementById('adminRejectCouponModal'));
+            adminRejectModalInstance.show();
+        }
+
+        function setRejectPreset(reason) {
+            document.getElementById('reject-reason-text').value = reason;
+        }
+
+        async function submitAdminRejectCoupon() {
+            const couponId = parseInt(document.getElementById('reject-coupon-id').value);
+            const reason = document.getElementById('reject-reason-text').value.trim();
+            const alertBox = document.getElementById('reject-alert');
+            const btn = document.getElementById('confirm-reject-btn');
+
+            if (!reason) {
+                alertBox.className = 'alert alert-danger small';
+                alertBox.innerText = 'Please provide a reason for rejecting this coupon.';
+                alertBox.classList.remove('d-none');
+                return;
+            }
+
+            btn.disabled = true;
+            try {
+                const res = await API.admin.rejectCoupon(couponId, reason);
+                if (res.success) {
+                    adminRejectModalInstance.hide();
+                    App.showToast(res.message || "Coupon rejected successfully. The seller has been notified.", "success");
+                    await loadAdminOverview();
+                    loadAdminCoupons(currentCouponFilter);
+                }
+            } catch (err) {
+                alertBox.className = 'alert alert-danger small';
+                alertBox.innerText = err.message || 'Failed to reject coupon.';
+                alertBox.classList.remove('d-none');
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        async function loadAdminDisputes() {
+            try {
+                const res = await API.admin.disputes();
+                if (res.success && res.data) {
+                    const disputes = res.data.disputes || [];
+                    const reports = res.data.reports || [];
+
+                    const tbody = document.getElementById('admin-disputes-tbody');
+                    if (disputes.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="7" class="text-center py-3 text-muted">No disputes recorded.</td></tr>';
+                    } else {
+                        tbody.innerHTML = disputes.map(d => `
+                            <tr>
+                                <td>#${d.disputeId}</td>
+                                <td><strong>${d.buyerName}</strong></td>
+                                <td>${d.sellerName}</td>
+                                <td>${d.couponTitle}</td>
+                                <td>
+                                    <div class="fw-bold text-danger">${d.reason}</div>
+                                    <div class="text-muted" style="font-size:0.75rem;">${d.details}</div>
+                                </td>
+                                <td><span class="badge ${d.status === 'OPEN' ? 'bg-warning text-dark' : (d.status === 'RESOLVED_REFUND' ? 'bg-danger' : 'bg-success')}">${d.status}</span></td>
+                                <td class="text-end">
+                                    ${d.status === 'OPEN' || d.status === 'UNDER_REVIEW' ? `
+                                        <button class="btn btn-sm btn-primary py-0 px-2" onclick="openResolveModal(${d.disputeId})">Resolve</button>
+                                    ` : `<span class="small text-muted">${d.adminNotes || 'Closed'}</span>`}
+                                </td>
+                            </tr>
+                        `).join('');
+                    }
+
+                    const rbody = document.getElementById('admin-reports-tbody');
+                    if (reports.length === 0) {
+                        rbody.innerHTML = '<tr><td colspan="6" class="text-center py-3 text-muted">No reported listings.</td></tr>';
+                    } else {
+                        rbody.innerHTML = reports.map(r => `
+                            <tr>
+                                <td>#${r.reportId}</td>
+                                <td>${r.couponTitle}</td>
+                                <td>${r.reporterName}</td>
+                                <td>${r.reason}</td>
+                                <td>${r.details || '—'}</td>
+                                <td><span class="badge bg-secondary">${r.status}</span></td>
+                            </tr>
+                        `).join('');
+                    }
+                }
+            } catch (err) {
+                console.error("Disputes load failed:", err);
+            }
+        }
+
+        function openResolveModal(disputeId) {
+            document.getElementById('resolve-dispute-id').value = disputeId;
+            document.getElementById('resolve-notes').value = '';
+            document.getElementById('resolve-alert').classList.add('d-none');
+            const modalEl = document.getElementById('resolveDisputeModal');
+            resolveModalInstance = new bootstrap.Modal(modalEl);
+            resolveModalInstance.show();
+        }
+
+        async function submitDisputeResolution() {
+            const disputeId = parseInt(document.getElementById('resolve-dispute-id').value);
+            const resolution = document.getElementById('resolve-decision').value;
+            const notes = document.getElementById('resolve-notes').value.trim();
+            const alertBox = document.getElementById('resolve-alert');
+
+            if (!notes) {
+                alertBox.className = 'alert alert-danger small';
+                alertBox.innerText = 'Please write administrative review findings.';
+                alertBox.classList.remove('d-none');
+                return;
+            }
+
+            try {
+                const res = await API.admin.resolveDispute({ disputeId, resolution, notes });
+                if (res.success) {
+                    App.showToast("Dispute resolved successfully!", "success");
+                    resolveModalInstance.hide();
+                    loadAdminDisputes();
+                    loadAdminOverview();
+                }
+            } catch (err) {
+                alertBox.className = 'alert alert-danger small';
+                alertBox.innerText = err.message || 'Failed to resolve dispute.';
+                alertBox.classList.remove('d-none');
+            }
+        }
+
+        async function loadAdminTransactions() {
+            try {
+                const res = await API.admin.transactions();
+                if (res.success && res.data) {
+                    const tbody = document.getElementById('admin-txns-tbody');
+                    if (res.data.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="9" class="text-center py-3 text-muted">No transactions recorded yet.</td></tr>';
+                        return;
+                    }
+
+                    tbody.innerHTML = res.data.map(t => `
+                        <tr>
+                            <td><code class="fw-bold">${t.transactionId}</code></td>
+                            <td>${t.createdAt ? t.createdAt.split(' ')[0] : 'Recent'}</td>
+                            <td>${t.buyerName}</td>
+                            <td>${t.sellerName || '—'}</td>
+                            <td>${t.brandName}: ${t.couponTitle}</td>
+                            <td class="fw-bold">₹${t.amount}</td>
+                            <td class="text-primary fw-bold">+₹${t.commissionAmount || 0}</td>
+                            <td class="text-success fw-bold">₹${t.netEarning || 0}</td>
+                            <td><span class="badge ${t.paymentStatus === 'SUCCESS' ? 'bg-success' : 'bg-danger'}">${t.paymentStatus}</span></td>
+                        </tr>
+                    `).join('');
+                }
+            } catch (err) {
+                console.error("Transactions load failed:", err);
+            }
+        }
+
+        async function loadAdminCategories() {
+            try {
+                const res = await API.coupons.categories();
+                if (res.success && res.data) {
+                    const tbody = document.getElementById('admin-categories-tbody');
+                    tbody.innerHTML = res.data.map(c => `
+                        <tr>
+                            <td>#${c.categoryId}</td>
+                            <td><i class="${c.iconClass || 'fa-solid fa-tag'} text-primary fs-5"></i></td>
+                            <td class="fw-bold">${c.name}</td>
+                            <td><code>${c.slug}</code></td>
+                            <td>${c.description || '—'}</td>
+                            <td><span class="badge bg-light text-dark border">${c.couponCount} Active</span></td>
+                            <td><span class="badge bg-success">Active</span></td>
+                            <td class="text-end">
+                                <button class="btn btn-sm btn-outline-secondary py-0 px-2" disabled>Active</button>
+                            </td>
+                        </tr>
+                    `).join('');
+                }
+            } catch (err) {
+                console.error("Categories load failed:", err);
+            }
+        }
+
+        function openAddCategoryModal() {
+            document.getElementById('new-cat-name').value = '';
+            document.getElementById('new-cat-slug').value = '';
+            document.getElementById('new-cat-desc').value = '';
+            document.getElementById('new-cat-alert').classList.add('d-none');
+            const modalEl = document.getElementById('addCategoryModal');
+            addCatModalInstance = new bootstrap.Modal(modalEl);
+            addCatModalInstance.show();
+        }
+
+        async function submitCreateCategory() {
+            const name = document.getElementById('new-cat-name').value.trim();
+            const slug = document.getElementById('new-cat-slug').value.trim();
+            const iconClass = document.getElementById('new-cat-icon').value.trim();
+            const description = document.getElementById('new-cat-desc').value.trim();
+            const alertBox = document.getElementById('new-cat-alert');
+
+            if (!name || !slug) {
+                alertBox.className = 'alert alert-danger small';
+                alertBox.innerText = 'Name and slug are required.';
+                alertBox.classList.remove('d-none');
+                return;
+            }
+
+            try {
+                const res = await API.post('/api/category/create', { name, slug, iconClass, description });
+                if (res.success) {
+                    App.showToast("Category created successfully!", "success");
+                    addCatModalInstance.hide();
+                    loadAdminCategories();
+                } else {
+                    alertBox.className = 'alert alert-danger small';
+                    alertBox.innerText = res.message;
+                    alertBox.classList.remove('d-none');
+                }
+            } catch (err) {
+                alertBox.className = 'alert alert-danger small';
+                alertBox.innerText = err.message;
+                alertBox.classList.remove('d-none');
+            }
+        }
+    </script>
+</body>
+</html>
