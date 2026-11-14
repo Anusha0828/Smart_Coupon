@@ -49,7 +49,7 @@ public class DBConnection {
 
         password = System.getenv("DB_PASSWORD");
         if (password == null) {
-            password = props.getProperty("db.password", "Anusha@556");
+            password = props.getProperty("db.password", "");
         }
 
         try {
