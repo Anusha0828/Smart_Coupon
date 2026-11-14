@@ -369,3 +369,5 @@ All endpoints return standardized JSON structures:
 
 Designed and developed for **CouponLoop – Turning Unused Coupons into Value**.  
 Distributed under the **MIT License**.
+
+Application live : https://smart-coupon-ql1v.onrender.com/seller-dashboard.html
